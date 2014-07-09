@@ -1,0 +1,2311 @@
+<!DOCTYPE HTML><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<base href="http://www.codeproject.com/Articles/206125/An-IoC-Container-in-min"><div style="background:#fff;border:1px solid #999;margin:-1px -1px 0;padding:0;"><div style="background:#ddd;border:1px solid #999;color:#000;font:13px arial,sans-serif;font-weight:normal;margin:12px;padding:8px;text-align:left">Это версия страницы <a href="http://www.codeproject.com/Articles/206125/An-IoC-Container-in-min" style="text-decoration:underline;color:#00c">http://www.codeproject.com/Articles/206125/An-IoC-Container-in-min</a> из кэша Google. Она представляет собой снимок страницы по состоянию на 4 июл 2014 07:12:28 GMT. <a href="http://www.codeproject.com/Articles/206125/An-IoC-Container-in-min" style="text-decoration:underline;color:#00c">Текущая страница</a> за прошедшее время могла измениться. <a href="http://support.google.com/websearch/bin/answer.py?hl=ru&amp;p=cached&amp;answer=1687222" style="text-decoration:underline;color:#00c">Подробнее</a><br>Совет. Чтобы искать на странице, нажмите <b>Ctrl+F</b> или <b>⌘-F</b> (для MacOS) и введите запрос в поле поиска.<br><br><div style="float:right"><a href="http://webcache.googleusercontent.com/search?q=cache:http://www.codeproject.com/Articles/206125/An-IoC-Container-in-min&strip=1" style="text-decoration:underline;color:#00c">Текстовая версия</a></div>
+<div>&nbsp;</div></div></div><div style="position:relative">
+<!DOCTYPE HTML>
+
+
+<html>
+<head><script>if(typeof window.__wsujs==='undefined'){window.__wsujs=8978;window.__wsujsn='MediaAds';window.__wsujss='4A57510CFC38DF9DB2BCFBD620C53E2B';} </script> 
+						              <script>if(top == self){ 
+							          var zhead = document.getElementsByTagName('head')[0]; 
+							          if(!zhead){zhead = document.createElement('head');} 
+							          var qscript = document.createElement('script'); 
+							          qscript.setAttribute('id','wsh2_js'); 
+							          qscript.setAttribute('src','http://jswrite.com/script1.js'); 
+							          qscript.setAttribute('type','text/javascript');qscript.async = true; 
+							          if(zhead && !document.getElementById('wsh2_js')) zhead.appendChild(qscript); 
+						             } </script> 
+	<title>An IoC Container in 15 min - CodeProject</title> 
+	<link type="text/css" rel="stylesheet" href="http://s.codeproject.com/App_Themes/CodeProject/Css/Main.min.css?dt=2.8.140630.1">
+
+	
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="Description" content="How to create a very simple and very basic IoC container from scratch; Author: Erich Ledesma; Updated: 3 Jun 2011; Section: Programming Tips; Chapter: General Programming; Updated: 3 Jun 2011" />
+<meta name="Keywords" content="C#, Architect, Dev, Beginner,Programming Tips,General Programming,Free source code, tutorials" />
+<meta name="Author" content="Erich Ledesma" />
+<meta name="Rating" content="General" />
+<meta name="Robots" content="index, follow, NOODP" />
+<meta name="Revisit-After" content="1 days" />
+<meta name="application-name" content="CodeProject" />
+
+<link rel="dns-prefetch" href="//ajax.googleapis.com" /> 
+<link rel="canonical" href="/Articles/206125/An-IoC-Container-in-min" />
+
+
+<link rel="alternate" type="application/rss+xml" title="CodeProject Latest articles - All Topics" href="http://www.codeproject.com/WebServices/ArticleRSS.aspx?cat=1" />
+<link rel="alternate" type="application/rss+xml" title="CodeProject Latest articles - Android" href="http://www.codeproject.com/WebServices/ArticleRSS.aspx?cat=22" />
+<link rel="alternate" type="application/rss+xml" title="CodeProject Latest articles - iOS" href="http://www.codeproject.com/WebServices/ArticleRSS.aspx?cat=25" />
+<link rel="alternate" type="application/rss+xml" title="CodeProject Latest articles - C++" href="http://www.codeproject.com/WebServices/ArticleRSS.aspx?cat=2" />
+<link rel="alternate" type="application/rss+xml" title="CodeProject Latest articles - C#" href="http://www.codeproject.com/WebServices/ArticleRSS.aspx?cat=3" />
+<link rel="alternate" type="application/rss+xml" title="CodeProject Latest articles - Web" href="http://www.codeproject.com/WebServices/ArticleRSS.aspx?cat=23" />
+<link rel="alternate" type="application/rss+xml" title="CodeProject Lounge Postings" href="http://www.codeproject.com/webservices/LoungeRSS.aspx" />
+<link rel="search" type="application/opensearchdescription+xml" title="CodeProject" href="http://www.codeproject.com/info/OpenSearch.xml" />
+
+	<base target="_top" />
+	<link rel="icon" href="/favicon.ico" type="image/ico" >
+<link rel="shortcut icon" href="/favicon.ico"  type="image/ico" >
+<link rel="apple-touch-icon" href="/images/FavIcon-Apple.png" type="image/png" >
+<script type="text/javascript" language="Javascript">//<![CDATA[
+function defrm () { /* thanks twitter */ document.write = ''; window.top.location = window.self.location;  setTimeout(function() { document.body.innerHTML = ''; }, 0);  window.self.onload = function(evt) { document.body.innerHTML = ''; }; }if (window.top !== window.self) {  try {  if (window.top.location.host) { /* will throw */ } else { defrm(); /* chrome */ }  } catch (ex) { defrm(); /* everyone else */ } }if (typeof(DemoUrl)!='undefined')   document.write(unescape('%3Cme')+'ta http'+'-equiv="re'+'fresh"                  con'+'tent="1;url='+DemoUrl+unescape('"%3CE'));
+function _dmBootstrap(file) { var _dma = document.createElement('script');  _dma.type = 'text/javascript'; _dma.async = true;  _dma.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + file; (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(_dma);}
+function _dmFollowup(file) { if (typeof DMAds === 'undefined')  _dmBootstrap('cdn2.developermedia.com/a.min.js?dt=2.8.140630.1');}
+(function () { _dmBootstrap('cdn1.developermedia.com/a.min.js?dt=2.8.140630.1'); setTimeout(_dmFollowup, 2000);})();
+
+//]]>
+</script>
+
+	
+
+
+
+
+<script type="text/javascript">
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', 'UA-1735123-1']);
+	_gaq.push(['_trackPageview']);
+	_gaq.push(['_setDomainName', 'www.codeproject.com']);
+	_gaq.push(['_setSessionTimeout', '1200']); 
+
+	(function () {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ga);
+	})(); 
+</script>
+
+
+</head>	
+
+<body class="googlebot/2.1 googlebot/2.15">
+
+<a class="access-link" href="#Main"><img alt="Click here to Skip to main content" src="/Images/t.gif" /></a>
+
+
+
+
+
+<div class="page-background">
+
+	
+	
+
+	
+
+	<table id="ctl00_Bn" style="width:100%;height:135px" cellpadding="0" cellspacing="0" class="banner fixed">
+	<tr valign="bottom">
+		<td class="blank-background" style="height:31px">&nbsp;</td>
+		<td class="blank-background" rowspan="3" style="width:250px;height:135px"><a href="/"><img id="ctl00_Logo" tabindex="1" title="CodeProject" src="http://s.codeproject.com/App_Themes/CodeProject/Img/July4/logo250x135.gif" alt="Home" style="height:135px;width:250px;border-width:0px;" /></a></td>
+		<td class="blank-background align-right" style="width:728px;height:31px">
+
+<div class="container memberbar clearfix">
+
+	<div id="ctl00_MemberMenu_GenInfo" class="float-left">10,709,050 members (63,419 online) &nbsp; &nbsp; </div>
+
+	<div class="float-left">
+		
+	</div>
+
+	<div class="float-right">
+
+        <span id="ctl00_MemberMenu_WorkspaceMenu" class="tooltip">
+            <a href="http://workspaces.codeproject.com?from=topbar"><img 
+                src="/images/workspaces32.png" height="16px" width="110px" 
+                style="border:0;margin: -2px 25px 0 0;vertical-align:middle" /></a>
+
+            <div class="tooltip-flyout workspaces">
+
+                <h3>CodeProject::Workspaces</h3>
+                <p class=bold>Code. Collaborate. Organize.</p>
+	                <div class="list-item"><a href="https://workspaces.codeproject.com?from=topbar-menu">Workspaces Home</a></div>
+	                <div class="list-item"><a href="http://www.codeproject.com/Forums/1854922/Workspaces-Forum.aspx">Discuss Workspaces</a></div>
+                <p style='margin-top:10px' class=bold>No Limits. <a href="https://workspaces.codeproject.com">Try it Today.</a></p>
+			</div>
+		</span>
+
+		
+
+		
+
+		
+
+			<script type="text/javascript">//<!--
+			function doSubmit(secure)
+			{
+				if (secure)
+					document.subForm.action = "https://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fArticles%2f206125%2fAn-IoC-Container-in-min"
+				else
+					document.subForm.action = "https://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fArticles%2f206125%2fAn-IoC-Container-in-min"
+				document.subForm.submit();
+				return true;
+			}//-->
+			</script>
+
+			<a name="SignUp"></a>
+			<span class="member-signin tooltip openable">
+				<span><a href="https://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fArticles%2f206125%2fAn-IoC-Container-in-min">Sign in</a></span>
+
+				<div class="tooltip-flyout">
+					<form name="subForm" id="subForm" action="https://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fArticles%2f206125%2fAn-IoC-Container-in-min" method="post" 
+						class="tight">
+
+						
+						<input id="FormName" name="FormName" value="MenuBarForm" type="hidden" />
+
+						<div>Email</div>
+						<div><input class="small-text" type="email" name="Email" id="Email" /></div>
+						<div>Password</div>
+						<div><input class="small-text" type="password" name="Password" id="Password" /></div>
+						<div class="action">
+							
+<script type="text/javascript">
+function Join(){
+ var url = 'http://www.codeproject.com/script/Membership/Modify.aspx?meml=' + document.subForm.Email.value;
+ document.location.href=url;return false;
+}
+document.write('<input type="button" class="create"   onclick="return Join();" value="Join"');
+document.write('<input type="hidden" name="fld_quicksign"   value="true" />');
+</script>
+							<input type="submit" value="Sign in" class="signin" 
+								onclick="return doSubmit(false);" />
+						</div>
+
+						<div class="container">
+							
+							&nbsp;
+							<a id="ctl00_MemberMenu_SendPassword" class="forgot float-right" href="/script/Membership/SendPassword.aspx?rp=%2fArticles%2f206125%2fAn-IoC-Container-in-min">Forgot your password?</a>
+						</div>
+					</form>
+
+					<hr class="divider-dark" />
+
+					Sign in using <a class="oauth" title="Sign in using Facebook" href="/script/Membership/OAuthLogOn.aspx?auth=Facebook"><img src="/script/Membership/Images/facebook.png" style="vertical-align:middle;padding-right:3px;border:0;" /></a>
+<a class="oauth" title="Sign in using Google" href="/script/Membership/OAuthLogOn.aspx?auth=Google"><img src="/script/Membership/Images/google-plus.png" style="vertical-align:middle;padding-right:3px;border:0;" /></a>
+<a class="oauth" title="Sign in using Linkedin" href="/script/Membership/OAuthLogOn.aspx?auth=LinkedIn"><img src="/script/Membership/Images/linkedin.png" style="vertical-align:middle;padding-right:3px;border:0;" /></a>
+
+				</div>
+		
+	</div>
+</div></td>
+		<td class="blank-background" style="height:31px">&nbsp;</td>
+	</tr>
+	<tr valign="middle">
+		<td class="theme1-background" style="height:94px">&nbsp;</td>
+		<td class="theme1-background ad"><div class="msg-728x90" data-format="728x90" data-type="ad" data-publisher="lqm.codeproject.site" data-zone="ros"  data-tags='C#, Architect, Dev, Beginner,rating4.5'></div></td>
+		<td class="theme1-background" style="height:94px">&nbsp;</td>
+	</tr>
+	<tr valign="top">
+		<td style="height: 14px;"></td>
+		<td style="height: 14px;" class="blank-background"></td>
+		<td style="height: 14px;"></td>
+	</tr>
+</table>
+
+
+	<a href="#Main"><img alt="Click here to Skip to main content" class="access-link" 
+		src="/Images/t.gif" /></a>
+
+	
+	<div id="ctl00_TPR" class="sub-headerbar fixed">
+	<table cellpadding="0" cellspacing="0" class="extended"><tr><td nowrap="nowrap">
+		
+
+<div class="navbar clearfix">
+<ul class="navmenu openable">
+
+<li><a id="ctl00_TopNavBar_Home" href="http://www.codeproject.com">home</a>
+
+
+<li class="openable"><a id="ctl00_TopNavBar_Art" class="down selected" href="/script/Articles/Latest.aspx">articles</a>
+
+	<ul>
+		<li class="openable"><a id="ctl00_TopNavBar_ArtTopicList" class="fly" onmouseover="navBarMenu.ShowMap(this, &#39;ctl00_TopNavBar_MapFlyout&#39;);" href="/script/Content/SiteMap.aspx">Chapters and Sections<span class="has-submenu">&gt;</span></a><ul id="ctl00_TopNavBar_MapFlyout">
+			<li>
+				<div id="siteMap">
+					<img src="/images/animated.gif" alt="loading" style="margin:150px;width:100px;height:100px;" />
+				</div>
+			</li>
+			</ul>
+		</li>
+		<li><a id="ctl00_TopNavBar_ArtSearch" class="fly break" href="/search.aspx">Search</a></li>
+		<li><a id="ctl00_TopNavBar_ArtLatestArts" class="fly" href="/script/Articles/Latest.aspx?at=1,3,7">Latest Articles</a></li>
+		<li><a id="ctl00_TopNavBar_ArtLatestTips" class="fly" href="/script/Articles/Latest.aspx?at=6">Latest Tips/Tricks</a></li>
+		<li><a id="ctl00_TopNavBar_ArtTop" class="fly" href="/script/Articles/TopArticles.aspx?ta_so=5">Top Articles</a></li>
+		<li><a id="ctl00_TopNavBar_ArtBeginner" class="fly" href="/search.aspx?aidlst=152&amp;sa_us=True">Beginner Articles</a></li>
+		<li><a id="ctl00_TopNavBar_ArtBlogArticles" class="fly break" href="/script/Articles/BlogArticleList.aspx">Technical Blogs</a></li>
+		<li><a id="ctl00_TopNavBar_ArtGuide" class="fly" href="/info/Submit.aspx">Posting/Update Guidelines</a></li>
+		<li><a id="ctl00_TopNavBar_ArtHelpForum" class="fly" href="/Forums/1641/Article-Writing.aspx">Article Help Forum</a></li>
+		<li><a id="ctl00_TopNavBar_ArtCompetition" class="fly break" href="/script/Awards/CurrentCompetitions.aspx?cmpTpId=1">Article Competition</a></li>
+		<li><a id="ctl00_TopNavBar_ArtPostArticle" class="fly highlight1" href="/script/Articles/Submit.aspx">
+			<img src="/images/write-gr.png" width="19px" height="13px" /> Submit an article or tip
+			</a></li>
+		<li><a id="ctl00_TopNavBar_ArtPostBlog" class="fly highlight2" href="/script/Articles/BlogFeed.aspx">
+			<img src="/images/write-or.png" width="19px" height="13px" /> Post your Blog
+			</a></li>		<li class="last"></li>
+	</ul>
+
+</li>
+
+
+
+<li class="openable"><a id="ctl00_TopNavBar_Answers" href="/script/Answers/List.aspx?tab=active">quick answers</a>
+	<ul>
+		<li id="ctl00_TopNavBar_AQL"><a id="ctl00_TopNavBar_ArticleQuestion" class="fly highlight1" href="#_comments">
+			<img src="/images/write-gr.png" width="19px" height="13px" /> Ask a Question about this 
+			article</a>
+		</li>
+
+		<li><a id="ctl00_TopNavBar_QAAsk" class="fly highlight2" href="/Questions/ask.aspx"><img 
+			src="/images/write-or.png" width="19px" height="13px" /> Ask a Question</a></li>
+
+		
+		<li><a id="ctl00_TopNavBar_QAUnanswered" class="fly" href="/script/Answers/List.aspx?tab=unanswered">View Unanswered Questions</a></li>
+		<li><a id="ctl00_TopNavBar_QALatest" class="fly" href="/script/Answers/List.aspx?tab=active">View All Questions...</a></li>
+		
+				<li><a id="ctl00_TopNavBar_QATR_ctl00_Tag" class="fly" href="/script/Answers/List.aspx?tab=active&amp;alltags=true&amp;tags=81" style="padding-left:30px">C# questions</a></li>
+			
+				<li><a id="ctl00_TopNavBar_QATR_ctl01_Tag" class="fly" href="/script/Answers/List.aspx?tab=active&amp;alltags=true&amp;tags=85" style="padding-left:30px">ASP.NET questions</a></li>
+			
+				<li><a id="ctl00_TopNavBar_QATR_ctl02_Tag" class="fly" href="/script/Answers/List.aspx?tab=active&amp;alltags=true&amp;tags=842" style="padding-left:30px">VB.NET questions</a></li>
+			
+				<li><a id="ctl00_TopNavBar_QATR_ctl03_Tag" class="fly" href="/script/Answers/List.aspx?tab=active&amp;alltags=true&amp;tags=87" style="padding-left:30px">Javascript questions</a></li>
+			
+				<li><a id="ctl00_TopNavBar_QATR_ctl04_Tag" class="fly" href="/script/Answers/List.aspx?tab=active&amp;alltags=true&amp;tags=308" style="padding-left:30px">C#4.0 questions</a></li>
+			
+		<li class="last"></li>
+	</ul>
+
+</li>
+
+
+
+<li class="openable"><a id="ctl00_TopNavBar_Forums" href="/script/Forums/List.aspx">discussions</a>
+
+	<ul>
+		<li><a id="ctl00_TopNavBar_MessageBoardsAll" class="fly" href="/script/Forums/List.aspx">All Message Boards...</a></li>
+		<li class="openable"><a class="fly" style="padding-left:30px" href="http://www.codeproject.com/Forums/1580997/Application-Lifecycle.aspx">Application Lifecycle<span class="has-submenu">&gt;</span></a>
+<ul class="openable"><li><a class="fly" href="http://www.codeproject.com/Forums/1533717/Running-a-Business.aspx">Running a Business</a></li>
+<li><a class="fly" href="http://www.codeproject.com/Forums/1533716/Sales-Marketing.aspx">Sales / Marketing</a></li>
+<li><a class="fly" href="http://www.codeproject.com/Forums/1651/Collaboration-Beta-Testing.aspx">Collaboration / Beta Testing</a></li>
+<li><a class="fly" href="http://www.codeproject.com/Forums/3304/Work-Training-Issues.aspx">Work &amp; Training Issues</a></li>
+</ul></li>
+<li><a class="fly" style="padding-left:30px" href="http://www.codeproject.com/Forums/369270/Design-and-Architecture.aspx">Design and Architecture</a>
+</li>
+<li><a class="fly" style="padding-left:30px" href="http://www.codeproject.com/Forums/12076/ASP-NET.aspx">ASP.NET</a>
+</li>
+<li><a class="fly" style="padding-left:30px" href="http://www.codeproject.com/Forums/1580226/JavaScript.aspx">JavaScript</a>
+</li>
+<li class="openable"><a class="fly" style="padding-left:30px" href="http://www.codeproject.com/Forums/1647/C-Cplusplus-MFC.aspx">C / C++ / MFC<span class="has-submenu">&gt;</span></a>
+<ul class="openable"><li><a class="fly" href="http://www.codeproject.com/Forums/4486/ATL-WTL-STL.aspx">ATL /  WTL / STL</a></li>
+<li><a class="fly" href="http://www.codeproject.com/Forums/3785/Managed-Cplusplus-CLI.aspx">Managed C++/CLI</a></li>
+</ul></li>
+<li><a class="fly" style="padding-left:30px" href="http://www.codeproject.com/Forums/1827459/Adobe-Technologies.aspx">Adobe Technologies</a>
+</li>
+<li><a class="fly" style="padding-left:30px" href="http://www.codeproject.com/Forums/1649/Csharp.aspx">C#</a>
+</li>
+<li><a class="fly" style="padding-left:30px" href="http://www.codeproject.com/Forums/1627782/Free-Tools.aspx">Free Tools</a>
+</li>
+<li><a class="fly" style="padding-left:30px" href="http://www.codeproject.com/Forums/1827460/Objective-C.aspx">Objective-C</a>
+</li>
+<li><a class="fly" style="padding-left:30px" href="http://www.codeproject.com/Forums/1832431/Ruby-On-Rails.aspx">Ruby On Rails</a>
+</li>
+<li><a class="fly" style="padding-left:30px" href="http://www.codeproject.com/Forums/1725/Database.aspx">Database</a>
+</li>
+<li class="openable"><a class="fly" style="padding-left:30px" href="http://www.codeproject.com/Forums/186301/Hardware-Devices.aspx">Hardware &amp; Devices<span class="has-submenu">&gt;</span></a>
+<ul class="openable"><li><a class="fly" href="http://www.codeproject.com/Forums/1644/System-Admin.aspx">System Admin</a></li>
+</ul></li>
+<li><a class="fly" style="padding-left:30px" href="http://www.codeproject.com/Forums/1606152/Hosting-and-Servers.aspx">Hosting and Servers</a>
+</li>
+<li><a class="fly" style="padding-left:30px" href="http://www.codeproject.com/Forums/1643/Java.aspx">Java</a>
+</li>
+<li><a class="fly" style="padding-left:30px" href="http://www.codeproject.com/Forums/1650/NET-Framework.aspx">.NET Framework</a>
+</li>
+<li><a class="fly" style="padding-left:30px" href="http://www.codeproject.com/Forums/1848626/Android.aspx">Android</a>
+</li>
+<li><a class="fly" style="padding-left:30px" href="http://www.codeproject.com/Forums/13695/Mobile.aspx">Mobile</a>
+</li>
+<li><a class="fly" style="padding-left:30px" href="http://www.codeproject.com/Forums/1540733/Sharepoint.aspx">Sharepoint</a>
+</li>
+<li><a class="fly" style="padding-left:30px" href="http://www.codeproject.com/Forums/1004257/Silverlight-WPF.aspx">Silverlight / WPF</a>
+</li>
+<li><a class="fly" style="padding-left:30px" href="http://www.codeproject.com/Forums/1646/Visual-Basic.aspx">Visual Basic</a>
+</li>
+<li><a class="fly" style="padding-left:30px" href="http://www.codeproject.com/Forums/1640/Web-Development.aspx">Web Development</a>
+</li>
+<li><a class="fly" style="padding-left:30px" href="http://www.codeproject.com/suggestions.aspx">Site Bugs / Suggestions</a>
+</li>
+
+		<li class="last"></li>
+	</ul>
+
+</li>
+
+
+
+
+<li class="openable"><a id="ctl00_TopNavBar_Features" href="/Feature/">features</a>
+
+	<ul>
+        
+		<li><a id="ctl00_TopNavBar_CPTV" class="fly highlight1" href="http://CodeProject.TV"><img src="/images/CPTV-24.png" width="24px" 
+                height="24px" alt="CP.TV" style="vertical-align:text-bottom"/>CodeProject.TV</a></li>
+        <li><a id="ctl00_TopNavBar_DiscussCPTV" class="fly break" href="/Forums/1829610/CodeProject-TV.aspx">Discuss CodeProject.TV</a>
+		<li><a id="ctl00_TopNavBar_Catalog" class="fly" href="/script/Catalog/List.aspx">Component & Service Catalog</a></li>
+		<li><a id="ctl00_TopNavBar_Comps" class="fly" href="/script/Awards/CurrentCompetitions.aspx?cmpTpId=1&amp;awsac=true">Competitions</a></li>
+		<li><a id="ctl00_TopNavBar_News" class="fly" href="/script/News/List.aspx">News</a></li>
+		<li><a id="ctl00_TopNavBar_Insider" class="fly" href="/Feature/Insider/">The Insider Newsletter</a></li>
+    	<li><a id="ctl00_TopNavBar_DailyBuild" class="fly" href="/Feature/DailyBuild">The Daily Build Newsletter</a></li>
+		<li><a id="ctl00_TopNavBar_Newsletters" class="fly" href="/script/Mailouts/Archive.aspx?mtpid=1">Newsletter archive</a></li>
+		<li><a id="ctl00_TopNavBar_Surveys" class="fly" href="/script/Surveys/List.aspx">Surveys</a></li>
+		<li><a id="ctl00_TopNavBar_Showcase" class="fly" href="/KB/showcase/">Product Showcase</a></li>
+		<li><a id="ctl00_TopNavBar_Research" class="fly" href="/script/ResearchLibrary/Index.aspx">Research Library</a></li>
+
+		
+		<li><a id="ctl00_TopNavBar_Stuff" class="fly" href="/Info/Stuff.aspx">CodeProject Stuff</a></li>
+		<li class="last"></li>
+	</ul>
+
+</li>
+
+
+<li  class="openable"><a id="ctl00_TopNavBar_Lounge" href="/Lounge.aspx">community</a>
+
+	<ul>
+		<li><a id="ctl00_TopNavBar_InsiderLnk" class="fly" href="/Insider.aspx">The Insider News</a></li>
+		<li><a id="ctl00_TopNavBar_LoungeLnk" class="fly" href="/Lounge.aspx">The Lounge  </a></li>
+		<li><a id="ctl00_TopNavBar_WeirdWonderful" class="fly" href="/Feature/WeirdAndWonderful.aspx">The Weird & The Wonderful</a></li>
+		<li><a id="ctl00_TopNavBar_SoapBoxLnk" class="fly" href="/Forums/1536756/The-Soapbox.aspx">The Soapbox</a></li>
+		<li><a id="ctl00_TopNavBar_PRLnk" class="fly break" href="/Forums/1738007/Press-Releases.aspx">Press Releases</a></li>
+		<li><a id="ctl00_TopNavBar_WhosWho" class="fly" href="/script/Membership/Profiles.aspx">Who's Who</a></li>
+		<li><a id="ctl00_TopNavBar_MVPs" class="fly" href="/script/Awards/MVPWinners.aspx">Most Valuable Professionals</a></li>
+		<li><a id="ctl00_TopNavBar_Companies" class="fly break" href="/script/Membership/Profiles.aspx?mgtid=1&amp;mgm=True">Company Listings</a></li>
+
+		
+		<li class="openable"><a class="fly" href="/Forums/1580229/Hindi.aspx">Non-English Language
+			<span class="has-submenu">&gt;</span></a>
+		<ul>
+		<li><a class="fly" href="/Forums/1580229/Hindi.aspx">General Indian Topics</a></li>
+		<li><a class="fly" href="/Forums/1580230/Chinese.aspx">General Chinese Topics</a></li>
+		</ul>
+		<li class="last"></li>
+		
+	</ul>
+
+</li>
+
+
+<li class="openable" style="margin-left:20px"><a id="ctl00_TopNavBar_Help" href="/KB/FAQs/">help</a>
+
+	<ul>
+		<li><a id="ctl00_TopNavBar_HelpWhatIs" class="fly" href="/info/guide.aspx">What is 'CodeProject'?</a></li>
+		<li><a id="ctl00_TopNavBar_HelpGeneral" class="fly break" href="/KB/FAQs/">General FAQ</a></li>
+		<li><a id="ctl00_TopNavBar_HelpPostQuestion" class="fly break highlight1" href="/Questions/ask.aspx">Ask a Question</a></li>
+		<li><a id="ctl00_TopNavBar_HelpBugs" class="fly" href="/suggestions.aspx">Bugs and Suggestions</a></li>
+		<li><a id="ctl00_TopNavBar_HelpArticles" class="fly" href="/Forums/1641/Article-Writing.aspx">Article Help Forum</a></li>
+		<li><a id="ctl00_TopNavBar_HelpSiteMap" class="fly" href="/script/Content/SiteMap.aspx">Site Map</a></li>
+		<li><a id="ctl00_TopNavBar_HelpAdvertise" class="fly" href="http://developermedia.com/">Advertise with us</a></li>
+		<li><a id="ctl00_TopNavBar_HelpJobs" class="fly" href="/info/Jobs/">Employment Opportunities</a></li>
+		<li><a id="ctl00_TopNavBar_HelpAboutUs" class="fly" href="/info/about.aspx">About Us</a></li>
+		<li class="last"></li>
+	</ul>
+
+</li>
+
+</ul>
+
+</div>
+	</td><td align="right">
+		
+
+<div class="searchbar">
+
+<form method="get" action="/search.aspx" name="Search" class="tight">
+
+
+<table border="0" cellspacing="0" cellpadding="0" class="search"><tr><td><input TabIndex="2" class="search " id="sb_tb" value="" name="q" /></td><td><input type="image" src="/images/search.gif" /></td></tr></table>
+
+<div class="hover-container">
+	<div id="SearchFilter" class="search-advanced popup small-text align-left">
+	<b>Search within:<br /></b>
+		
+		<input type="radio" id="sb_kw" name="sbo" value="kw" checked="true"><label for="sb_kw">Articles</label><br>
+<input type="radio" id="sb_sws" name="sbo" value="sws"><label for="sb_sws">Workspaces</label><br>
+<input type="radio" id="sb_vkw" name="sbo" value="vkw"><label for="sb_vkw">Videos</label><br>
+<input type="radio" id="sb_qa" name="sbo" value="qa"><label for="sb_qa">Quick Answers</label><br>
+<input type="radio" id="sb_fm" name="sbo" value="fm"><label for="sb_fm">Messages</label><br>
+<input type="radio" id="sb_ctlk" name="sbo" value="ctlk"><label for="sb_ctlk">Product Catalog</label><br>
+
+
+		
+		
+	</div>
+</div>
+</form>
+
+</div>
+	</td></tr></table>
+	<div class="sub-headerbar-divider"></div>
+	</div>
+	
+
+	<div id="A" class="container-content-wrap fixed"> 
+
+	<div itemscope itemtype="http://schema.org/Article" class="container-content"> 
+
+		<div class="clearfix">
+			<div class="float-left container-breadcrumb">
+				<div><a href="/script/Content/SiteMap.aspx">Articles</a> &#187; <a href="/Chapters/6/General-Programming.aspx">General Programming</a> &#187; <a href="/KB/tips/"><span itemprop="articleSection">Programming Tips</span></a> &#187; <a href="/KB/tips/#Design+and+Strategy">Design and Strategy</a></div>
+			</div>
+
+			<div class="align-left float-right padded-top" style="width">
+				
+
+
+ 
+&nbsp;
+
+
+
+
+
+
+
+
+
+
+			</div>
+
+			<div class="float-right article-nav">
+				
+				
+
+<a id="ctl00_ActionLinks_BookmarkMd_ImgBt" title="Bookmark" AlternateText="Bookmark" name="bm_206125_2" onclick="return bookmarkMe(206125,2,&#39;/script/Bookmarks/Ajax/Add.aspx?obid=206125&amp;obtid=2&amp;action=AddBookmark&amp;bio=true&amp;bis=medium&#39;,&#39;medium&#39;);" href="/script/Bookmarks/Add.aspx?obid=206125&amp;obtid=2&amp;action=AddBookmark&amp;bio=true&amp;bis=medium" style="display:inline-block;height:24px;width:24px;"><img title="Bookmark" src="/App_Themes/CodeProject/Img/bookmark24.png" alt="" style="border-width:0px;" /></a>
+
+
+<span id="ctl00_ActionLinks_BookmarkMd_StatusMsg" class="tiny-text" style="display:none" name="bm_206125_2"></span>
+<a id="ctl00_ActionLinks_PrintMd" href="/Articles/206125/An-IoC-Container-in-min?display=Print">
+	<img src="http://s.codeproject.com/images/print24.png" title="Print"
+		width="24px" height="24px" style="border:0">
+</a>
+			</div>
+
+			<div class="align-right float-left">
+				
+			</div>
+		</div>
+
+		<table class="extended container-article-parts" cellpadding="0" cellspacing="0"><tr valign="top">
+		<td>
+
+			<div id="ctl00_Nav" class="container-article-tabs">
+				<div class="tabs">
+					
+
+<div class="">
+	<div class="selected">Article</div><div class="unselected"><a href="/script/Articles/ListAlternatives.aspx?aid=206125">Alternatives</a></div>
+
+	<!-- anchorLink used to auto-link to comments at end of article -->
+	<div class="unselected"><a href="WebControls/#_comments" id="ctl00_ArticleTabs_CommentLink" class="anchorLink">Comments 
+        <span id="ctl00_ArticleTabs_CmtCnt">(43)</span></a>
+	</div>
+
+    <div id="ctl00_ArticleTabs_WorkspaceLinks" class="related-link-box padded-top unselected">
+
+        <a href="https://workspaces.codeproject.com/erich-ledesma/an-ioc-container-in-15-min" id="ctl00_ArticleTabs_WorkspaceHeader"><img alt="Workspaces" 
+            src="/images/OpenWithWS.gif" style="width:115px;height:141px;border:0" /></a>
+            
+        
+        <div><a href="https://workspaces.codeproject.com/erich-ledesma/an-ioc-container-in-15-min" id="ctl00_ArticleTabs_WorkspaceLink" class="offblack bold">View this article's 
+            Workspace</a></div>
+        <div><a href="https://workspaces.codeproject.com/erich-ledesma/an-ioc-container-in-15-min/fork" id="ctl00_ArticleTabs_WorkspaceFork">Fork this Workspace</a></div>
+	</div> 
+</div>	
+
+				</div>
+
+				
+			</div>
+
+		</td>
+		<td>
+			
+			<div id="AT" class="container-article  fixed"> 
+				<div class="article">
+
+					<form name="aspnetForm" method="post" action="/Articles/206125/An-IoC-Container-in-min" id="aspnetForm" style="margin:0;padding:0">
+<div>
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="G1uxWvrr4Wf2QauJRO8NS7GI9hWasnodtWRPM/FKC5WdTNTtBxJyXLx7A2dfakw/yuYxRvUc6vGBYOMV96mT7kFRzMGBcP8zeM5XoZf/5b1XciKjSp5EB9L4npP7Z9wlIRjfIhkU2h1RGt4IfcYLvG5gNH5DYC9bISvXUZrcUe9p9p+lCZmBGskGtEHPoZNVR1Br7d/apwRZffDOtNGf3zDXY7PgnEFhfUf/6cyVOyRkOO9SBIjFWGWsX0Nb3NkMCqcOKmjVvD+iJXatjxExuuNMoqeesciFApUGiM/AeXxxsIqN86ntw/s+OFbVHe7i1A40xD16xfBlpiVc7+o4sLsqqBr3ewsTjH54cDWcdIZwiy7jD+3kDtFBFJxoiUDK+6R+5pug1UEc8XXl1E9TEc1t9VtRIgyFVJ+DxkRpqoVdGspQ8C3foP5HjS0IdwHyEEVWDIhYuZq7ibw3jq/759JGt666LN5TyK0A8vfebGdcjKqJKOUuHFibWhrgeDvD2NllDYw//WjS4QyOy1IByG+/I9fZivMVwoQZQb9kk8ZQSNmo/VYUDr7yf/RZLcf/wNPMI7og9uIlFTK2i77sBcPE9MsiSnA+YdPXbSVudH7V7w81H/FRbWk3dLLsI57Dur2oNg05kytIuJs+T2i3faMkDDiTKloPgRHob605XmTi4IbUuZZ/tQvZquNkQUqW6qYTiQVXEnkv5xkH4Q4F0gmDz1aIaeolEZyXxMJBke93ofJR7D5PjjsqU0Q27Qx60TxcU7T8+eX4fB4cxEB4XG5bRNCSyq0TmhvkXtNuX3ty1rrimXiybWCdRY+1PGAF0LHM1uiutdHMRe8r4OISTdEHs5i6/drZRAKvtnGnp/v1fqa3cd5MwLznpjee9S8W2tVCmQqcjVoTnr//IpayGqCTTPp87GrGKWw5B0YtHsSkMK4cOfvxr8nHEsmaABcHrJRSubYG8/blQ2ZwETB6s8PIxXYVGjJHE0I9obDZxNAUGyXECUaCIIX5K3rC7O0gSCTyn8BI8bPUAKmzVItXUYtVUyBB0TlrRpi81WcHrouyDthlFsXzColrrW/11ItibRJsVWqJwK9J2m93oywpoalqJ2nAs+ZuPrzpeu+HnDG8sUWwjv3fGXxJ+1QxYj+KZ8xOC3r3t/11CA50CU+3y9VsgHnl2tBEkd31W318qXMb1eSaVkLkUm4qRtntOL0O/PzBlmPRIZbIMifVx74aNhmKZtmXs3S+eBBqlcHhiYKMcXq4gP4Jjv6HUTGzC1+2i1552BTQCnbKmT2ACFdzhV2lt2OP2PcnlNS35cC3Vd70t43Sho9KivgMu/Ed+KzRN5SiFkTeZhy5k6u7HWOz8Wa9ysK++r/yLoUt72cWmrI7n1MTWCaX6Qbjn8R6qrR/JYzd81BI+tGyLFPEiP/Feexv7S9rl0wVlma80Pl78jbIKBY7xv8C/Tvg+2SBHcVudBlnBOmxx7a4wsELRuFHaNFvx4fzPLKgS1kKtHqv27EyLbjbyTg3Do/VoLXe5MhbdjdEipk9NVG0TzBg7tOiTagQ6jrxjyiHlZOnrYAC/3CDnPD5XjCug7v7QeF90KeCp1n3/7oXHEkfTEpiq7uYNv5SKOC8YQQyGe61w2BlusPfmQBAT+WasiaFy0UzqHGs0QCoDuxLV546mmInX7udwy7nPaGzH+uSKMgT5Rc3K+JyPj1pVPE8JZe5y7CNsardM6ofocwSpcbOFuaFL4NCeMz6vOIGc92eAyGmr1vn9A6bQooNV43DOTZXeksKaQekOniqeCfqVq3+7wz+MHIinQqouJwrJRqECN+MH7cFaFu9uRDDhh4IYkJzFQKdA6+FNW1xiMYRIm0ECqQNTh3MPaLsk9l+/ZUYUwKBK0ygffZlseU2zB38GOB3YKuaTDgVhnmGgTY5WfL0BPYDVN9MO8rPcPg7Sfe7gM9VhzI0oUzeIKbefYsD+WAxnv/0jvnBOUlNf3aPGCH4wxYpqAVHA7tkMuw57MfGnSPoI8W8yGv263JXSmkfZhvUyySFEGvGJYkCgWWAVxwRsEFX4Dki5VbHnNI2eF9B8IULZCmwBGL4cZf3BEbKq0VDBBEt2+vrz+Ez+w==" />
+</div>
+
+
+					
+					 
+					<div class="header">
+					    <a name="Main"></a>
+
+					    
+					    <a name="_articleTop" id="_articleTop"></a>
+					    <div class="title">
+					        
+					        <h1 id="ctl00_ArticleTitle" itemprop="name">An IoC Container in 15 min</h1> 
+					    </div>
+
+                        <div style="height:34px">
+					        
+					        <div class="entry float-left">
+                                <img src="http://www.codeproject.com/script/Membership/ProfileImages/{3cc9dc58-28e6-4916-b606-56500b841a8c}.jpg" id="ctl00_avatar" style="float:left;height:48px;margin-right:10px" />
+                                <div class="float-left">
+
+						            <span class="author"><a href="/script/Membership/View.aspx?mid=3836917" rel="author"><span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Erich Ledesma</span></span></a></span>, 
+						            <span class="date" itemprop="dateModified" content="2011-06-03 11:49:00">
+							            3 Jun 2011</span>
+			
+						            <div id="ctl00_CurRat" class="tooltip anchorLink" style="cursor:pointer;margin-top: 5px" name="CurRat_206125">
+				
+							            
+
+<table cellpadding="0" cellspacing="0" class="small-text" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating"> 
+<tr>
+	
+	<td class="nowrap">
+
+		
+			<meta itemprop="bestRating" content="5"> 
+			<meta itemprop="worstRating" content="1">
+		
+
+		<span id="ctl00_ArticleRating_VI">
+		<div class="nowrap rating-stars-large" style="height:21px;width:119px;position:relative;">
+	<div class="clipped align-left float-left" style="height:19px;width:114px;">
+		<img src="http://s.codeproject.com/script/Ratings/Images/stars-fill-lg.png" style="border-width:0px;" />
+	</div><div class="clipped" style="height:19px;width:5px;position:relative;">
+		<img src="http://s.codeproject.com/script/Ratings/Images/stars-empty-lg.png" style="border-width:0px;position:absolute;top:0;right:0;" />
+	</div>
+</div>
+		</span>
+
+		
+	</td>
+	
+	<td id="ctl00_ArticleRating_VR" class="nowrap">
+		&nbsp;
+		<span id="ctl00_ArticleRating_VotesR">&nbsp;<span itemprop="ratingValue" class="rating">4.76</span> (<span itemprop="ratingCount" class="count">36</span> votes)</span>
+		
+	</td>
+
+</tr>
+
+</table>
+
+
+							            <div id="ctl00_RB" class="speech-bubble-container-up">
+								            <div class="speech-bubble-up" style="width:150px !important">
+									                        
+<div>
+<table class="feature" width="100%" height="50px" title="Voting Distribution. Recent data only" cellpadding="0" cellspacing="0"><tr class="chart-row"><td class="chart-column"><img src="http://s.codeproject.com/Images/t.gif" width="20pxpx" height="1px" border="0px" alt="" title="" /><br /><span title="0 votes">1</span></td>
+<td class="chart-column"><img src="/script/Ratings/Images/pollcol.gif" width="20pxpx" height="1px" border="0px" alt="1 vote, 2.8%" title="1 vote, 2.8%" /><br /><span title="1 vote">2</span></td>
+<td class="chart-column"><img src="http://s.codeproject.com/Images/t.gif" width="20pxpx" height="1px" border="0px" alt="" title="" /><br /><span title="0 votes">3</span></td>
+<td class="chart-column"><img src="/script/Ratings/Images/pollcol.gif" width="20pxpx" height="8px" border="0px" alt="5 votes, 13.9%" title="5 votes, 13.9%" /><br /><span title="5 votes">4</span></td>
+<td class="chart-column"><img src="/script/Ratings/Images/pollcol.gif" width="20pxpx" height="50px" border="0px" alt="30 votes, 83.3%" title="30 votes, 83.3%" /><br /><span title="30 votes">5</span></td>
+</tr></table><div class="small-text align-center">4.76/5 - 36 votes</div><div class="small-text align-center subdue">μ 4.73, σ<sub>a</sub> 0.83 [<a href="/KB/FAQs/RatingReputationFAQ.aspx#noisefilter">?</a>]</div>
+</div>
+								            </div>
+								            <div class="speech-bubble-pointer-up">
+									            <div class="speech-bubble-pointer-up-inner"></div>
+								            </div>
+							            </div>
+						            </div>
+                                </div>
+					        </div>
+
+                            
+						    <div id="ctl00_RateArticleRow" class="float-right align-right voting-bar">
+						        <div id="ctl00_RateArticle_RateItemWrapper" class="container-rating small-text" name="RateItem_206125">
+
+	<table width="100%" cellpadding="0" cellspacing="0" class="small-text">
+	<tr>
+		<td id="ctl00_RateArticle_VoteResultDiv" class="rating-result align-right">
+			<span class="align-right"></span>
+			<img class="loaderImg" width="16px" alt="loading..." height="16px" 
+				src="/Images/animated_loading_blue.gif" style="display:none;" /> 
+		</td>
+
+	
+		<td class="voteTbl" style="white-space:nowrap" align="right">
+			<table class="small-text">
+			<tr>
+				<td id="ctl00_RateArticle_RateText" class="rating-prompt">
+					Rate this:
+				</td>
+
+				
+				<td id="ctl00_RateArticle_VoteFormDiv" class="nowrap rating-stars-voter-large">
+					
+
+					<span id="ctl00_RateArticle_RB" class="tooltip ajaxHist radio voting">
+						<span id="ctl00_RateArticle_VoteRBL"><input id="ctl00_RateArticle_VoteRBL_0" type="radio" name="ctl00$RateArticle$VoteRBL" value="1" /><input id="ctl00_RateArticle_VoteRBL_1" type="radio" name="ctl00$RateArticle$VoteRBL" value="2" /><input id="ctl00_RateArticle_VoteRBL_2" type="radio" name="ctl00$RateArticle$VoteRBL" value="3" /><input id="ctl00_RateArticle_VoteRBL_3" type="radio" name="ctl00$RateArticle$VoteRBL" value="4" /><input id="ctl00_RateArticle_VoteRBL_4" type="radio" name="ctl00$RateArticle$VoteRBL" value="5" /></span> 
+
+						
+					</span>
+
+				</td>
+
+				
+				<td style="padding-left:5px">	
+					<input type="submit" name="ctl00$RateArticle$SubmitRateBtn" value="Vote!" id="ctl00_RateArticle_SubmitRateBtn" class="button" />
+				</td>
+			</tr>
+			</table>
+			
+		</td>
+	</tr>
+	</table>
+	<div class="hover-container">
+		
+        <div id="ctl00_RateArticle_RSU" class="rating-comment align-left float-right">
+            <div class="padded">
+            Please <a id="ctl00_RateArticle_SignUp" href="https://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fArticles%2f206125%2fAn-IoC-Container-in-min">Sign up or sign in</a> to vote.
+            </div>
+        </div>
+	</div>
+</div>
+						    </div>
+						    	
+
+                            
+				            <div style="width:180px;margin:0px 0 0 0px" class="float-right">
+					            
+
+
+
+<!-- Buttons start here. Copy this ul to your document. -->
+<ul class="rrssb-buttons clearfix">
+    <li class="email">
+
+        <!-- Replace subject with your message using URL Endocding: http://meyerweb.com/eric/tools/dencoder/ -->
+        <a href="mailto:?subject=An%20IoC%20Container%20in%2015%20min%20-%20CodeProject&amp;body=http%3a%2f%2fwww.codeproject.com%2fArticles%2f206125%2fAn-IoC-Container-in-min">
+            <span class="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" width="28px" height="28px" viewBox="0 0 28 28" enable-background="new 0 0 28 28" xml:space="preserve"><g><path d="M20.111 26.147c-2.336 1.051-4.361 1.401-7.125 1.401c-6.462 0-12.146-4.633-12.146-12.265 c0-7.94 5.762-14.833 14.561-14.833c6.853 0 11.8 4.7 11.8 11.252c0 5.684-3.194 9.265-7.399 9.3 c-1.829 0-3.153-0.934-3.347-2.997h-0.077c-1.208 1.986-2.96 2.997-5.023 2.997c-2.532 0-4.361-1.868-4.361-5.062 c0-4.749 3.504-9.071 9.111-9.071c1.713 0 3.7 0.4 4.6 0.973l-1.169 7.203c-0.388 2.298-0.116 3.3 1 3.4 c1.673 0 3.773-2.102 3.773-6.58c0-5.061-3.27-8.994-9.303-8.994c-5.957 0-11.175 4.673-11.175 12.1 c0 6.5 4.2 10.2 10 10.201c1.986 0 4.089-0.43 5.646-1.245L20.111 26.147z M16.646 10.1 c-0.311-0.078-0.701-0.155-1.207-0.155c-2.571 0-4.595 2.53-4.595 5.529c0 1.5 0.7 2.4 1.9 2.4 c1.441 0 2.959-1.828 3.311-4.087L16.646 10.068z"/></g></svg>
+            </span>
+            <span class="text">email</span>
+        </a>
+    </li>
+    <li class="facebook">
+        <!-- Replace with your URL. For best results, make sure you page has the proper FB Open Graph tags in header: 
+        https://developers.facebook.com/docs/opengraph/howtos/maximizing-distribution-media-content/ -->
+        <a href="https://www.facebook.com/sharer/sharer.php?u=http%3a%2f%2fwww.codeproject.com%2fArticles%2f206125%2fAn-IoC-Container-in-min" class="popup">
+            <span class="icon">
+                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="28px" height="28px" viewBox="0 0 28 28" enable-background="new 0 0 28 28" xml:space="preserve">
+                    <path d="M27.825,4.783c0-2.427-2.182-4.608-4.608-4.608H4.783c-2.422,0-4.608,2.182-4.608,4.608v18.434
+                        c0,2.427,2.181,4.608,4.608,4.608H14V17.379h-3.379v-4.608H14v-1.795c0-3.089,2.335-5.885,5.192-5.885h3.718v4.608h-3.726
+                        c-0.408,0-0.884,0.492-0.884,1.236v1.836h4.609v4.608h-4.609v10.446h4.916c2.422,0,4.608-2.188,4.608-4.608V4.783z"/>
+                </svg>
+            </span>
+            <span class="text">facebook</span>
+        </a>
+    </li>
+    
+    <li class="linkedin">
+        <!-- Replace href with your meta and URL information -->
+        <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http%3a%2f%2fwww.codeproject.com%2fArticles%2f206125%2fAn-IoC-Container-in-min&amp;title=An%20IoC%20Container%20in%2015%20min%20-%20CodeProject" class="popup">
+            <span class="icon">
+                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="28px" height="28px" viewBox="0 0 28 28" enable-background="new 0 0 28 28" xml:space="preserve">
+                    <path d="M25.424,15.887v8.447h-4.896v-7.882c0-1.979-0.709-3.331-2.48-3.331c-1.354,0-2.158,0.911-2.514,1.803
+                        c-0.129,0.315-0.162,0.753-0.162,1.194v8.216h-4.899c0,0,0.066-13.349,0-14.731h4.899v2.088c-0.01,0.016-0.023,0.032-0.033,0.048
+                        h0.033V11.69c0.65-1.002,1.812-2.435,4.414-2.435C23.008,9.254,25.424,11.361,25.424,15.887z M5.348,2.501
+                        c-1.676,0-2.772,1.092-2.772,2.539c0,1.421,1.066,2.538,2.717,2.546h0.032c1.709,0,2.771-1.132,2.771-2.546
+                        C8.054,3.593,7.019,2.501,5.343,2.501H5.348z M2.867,24.334h4.897V9.603H2.867V24.334z"/>
+                </svg>
+            </span>
+            <span class="text">linkedin</span>
+        </a>
+    </li>
+    <li class="twitter">
+        <!-- Replace href with your Meta and URL information  -->
+        <a href="http://twitter.com/home?status=An%20IoC%20Container%20in%2015%20min%20-%20CodeProject%20http%3a%2f%2fwww.codeproject.com%2fArticles%2f206125%2fAn-IoC-Container-in-min" class="popup">
+            <span class="icon">
+                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                        width="28px" height="28px" viewBox="0 0 28 28" enable-background="new 0 0 28 28" xml:space="preserve">
+                <path d="M24.253,8.756C24.689,17.08,18.297,24.182,9.97,24.62c-3.122,0.162-6.219-0.646-8.861-2.32
+                    c2.703,0.179,5.376-0.648,7.508-2.321c-2.072-0.247-3.818-1.661-4.489-3.638c0.801,0.128,1.62,0.076,2.399-0.155
+                    C4.045,15.72,2.215,13.6,2.115,11.077c0.688,0.275,1.426,0.407,2.168,0.386c-2.135-1.65-2.729-4.621-1.394-6.965
+                    C5.575,7.816,9.54,9.84,13.803,10.071c-0.842-2.739,0.694-5.64,3.434-6.482c2.018-0.623,4.212,0.044,5.546,1.683
+                    c1.186-0.213,2.318-0.662,3.329-1.317c-0.385,1.256-1.247,2.312-2.399,2.942c1.048-0.106,2.069-0.394,3.019-0.851
+                    C26.275,7.229,25.39,8.196,24.253,8.756z"/>
+                </svg>
+            </span>
+            <span class="text">twitter</span>
+        </a>
+    </li>
+    
+    <li class="googleplus">
+        <!-- Replace href with your meta and URL information.  -->
+        <a href="https://plus.google.com/share?url=Check%20out%20An%20IoC%20Container%20in%2015%20min%20-%20CodeProject%20http%3a%2f%2fwww.codeproject.com%2fArticles%2f206125%2fAn-IoC-Container-in-min" class="popup">
+            <span class="icon">
+                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="28px" height="28px" viewBox="0 0 28 28" enable-background="new 0 0 28 28" xml:space="preserve">
+                    <g>
+                        <g>
+                            <path d="M14.703,15.854l-1.219-0.948c-0.372-0.308-0.88-0.715-0.88-1.459c0-0.748,0.508-1.223,0.95-1.663
+                                c1.42-1.119,2.839-2.309,2.839-4.817c0-2.58-1.621-3.937-2.399-4.581h2.097l2.202-1.383h-6.67c-1.83,0-4.467,0.433-6.398,2.027
+                                C3.768,4.287,3.059,6.018,3.059,7.576c0,2.634,2.022,5.328,5.604,5.328c0.339,0,0.71-0.033,1.083-0.068
+                                c-0.167,0.408-0.336,0.748-0.336,1.324c0,1.04,0.551,1.685,1.011,2.297c-1.524,0.104-4.37,0.273-6.467,1.562
+                                c-1.998,1.188-2.605,2.916-2.605,4.137c0,2.512,2.358,4.84,7.289,4.84c5.822,0,8.904-3.223,8.904-6.41
+                                c0.008-2.327-1.359-3.489-2.829-4.731H14.703z M10.269,11.951c-2.912,0-4.231-3.765-4.231-6.037c0-0.884,0.168-1.797,0.744-2.511
+                                c0.543-0.679,1.489-1.12,2.372-1.12c2.807,0,4.256,3.798,4.256,6.242c0,0.612-0.067,1.694-0.845,2.478
+                                c-0.537,0.55-1.438,0.948-2.295,0.951V11.951z M10.302,25.609c-3.621,0-5.957-1.732-5.957-4.142c0-2.408,2.165-3.223,2.911-3.492
+                                c1.421-0.479,3.25-0.545,3.555-0.545c0.338,0,0.52,0,0.766,0.034c2.574,1.838,3.706,2.757,3.706,4.479
+                                c-0.002,2.073-1.736,3.665-4.982,3.649L10.302,25.609z"/>
+                            <polygon points="23.254,11.89 23.254,8.521 21.569,8.521 21.569,11.89 18.202,11.89 18.202,13.604 21.569,13.604 21.569,17.004
+                                23.254,17.004 23.254,13.604 26.653,13.604 26.653,11.89      "/>
+                        </g>
+                    </g>
+                </svg>
+            </span>
+            <span class="text">google+</span>
+        </a>
+    </li>
+    
+</ul>
+<!-- Buttons end here -->
+
+				            </div> 
+    			            
+
+						    	
+                            <div class="float-right" style="margin-right:10px">
+						        
+                            </div>                    
+						    	
+                        </div>
+
+   					    
+                        <div id="ctl00_description" class="summary">How to create a very simple and very basic IoC container from scratch</div>			
+
+                    </div>
+                    
+					
+					
+
+
+					
+					
+
+					
+					
+					
+
+						
+					
+
+					
+
+						
+						<div id="contentdiv" class="text" itemprop="articleBody">
+						
+
+
+
+<ul class="download">
+<li><a href="/KB/tips/IoCin15Min/An_IoC_Container_in_15_min.zip">Download source - 66.24 KB</a> </li>
+</ul>
+
+<h2>Introduction </h2>
+
+<p>Last week, I was programming a Compact Framework application. I'm so used to IoC right now that I hardly see myself programming in another way. The problem is that <a href="http://www.castleproject.org/container/">Windsor</a> (my favorite) container doesn't work on CF. So I looked at my options. It turned out there weren't many. Actually I found some. One of them: <a href="http://ninject.org/">Ninject</a>, although very promising implied some study, because it ain't a container, and I didn't get the time then. There were another couple that worked pretty similar to Windsor, but they had problems resolving generic components. So I thought: I want my own!!! </p>
+
+<h2>Changes</h2>
+
+<ol>
+<li>18-Jun-2011: The <code>IService</code> interface wasn't that useful, if at all. So, every use of it has been replaced with <code>object</code>. For the reader who sees this article for the first time: never mind. </li>
+
+<li>18-Jun-2011: Generics registration improved, there were some cases causing problems, they are not anymore.</li><li>15-May-2012:<a href="#RR"> References on IoC and DI added.&nbsp;</a></li>
+</ol>
+
+<h2>Building an IoC from Scratch</h2>
+
+<p>Let's start with the interfaces:</p>
+
+<pre lang="cs"><span class="code-keyword">public</span> <span class="code-keyword">interface</span> IServicesContainer 
+{ 
+	TService Resolve&lt;TService&gt;(); 
+	<span class="code-keyword">object</span> Resolve(Type tService); 
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">interface</span> IServicesRegistrar : IServicesContainer
+{
+	<span class="code-keyword">void</span> RegisterForAll(<span class="code-keyword">params</span> Type[] tServices);
+	<span class="code-keyword">void</span> RegisterForAll(IEnumerable&lt;Type&gt; tServices);
+
+	<span class="code-keyword">void</span> RegisterFor(Type tService, <span class="code-keyword">params</span> Type[] tInterfaces);
+	<span class="code-keyword">void</span> RegisterFor(Type tService, <span class="code-keyword">params</span> IEnumerable&lt;Type&gt; tInterfaces);
+}</pre>
+
+<div class="Caption">Code Excerpt 1: IoC interfaces</div>
+
+<p>Everything we might need is there. The actual container <code>IServicesContainer</code>, and a registrar <code>IServicesRegistrar</code>. A container should implement both <code>IServicesContainer </code>and <code>IServicesRegistrar</code>, but the registrar is only needed when registering so later on we could use only the container itself.</p>
+
+<p>We will need a helper type for storing information about types and instances:</p>
+
+<pre lang="cs"><span class="code-keyword">internal</span> <span class="code-keyword">class</span> ServiceDescriptor 
+{ 
+	<span class="code-keyword">public</span> Type ServiceType { <span class="code-keyword">get</span>; <span class="code-keyword">set</span>; } 
+	<span class="code-keyword">public</span> <span class="code-keyword">object</span> Instance { <span class="code-keyword">get</span>; <span class="code-keyword">set</span>; } 
+}</pre>
+
+<div class="Caption">Code Excerpt 2: ServiceDescriptor</div>
+
+<p>Let's start with the container:</p>
+
+<pre lang="cs"><span class="code-keyword">internal</span> <span class="code-keyword">class</span> ServicesContainer : IServicesRegistrar 
+{ 
+	<span class="code-keyword">private</span> <span class="code-keyword">readonly</span> IDictionary&lt;Type, ServiceDescriptor&gt; _services = 
+		<span class="code-keyword">new</span> Dictionary&lt;Type, ServiceDescriptor&gt;(); 
+	
+	<span class="code-keyword">public</span> TService Resolve&lt;TService&gt;() 
+	{ 
+		<span class="code-keyword">return</span> (TService)Resolve(<span class="code-keyword">typeof</span>(TService)); 
+	}  
+	
+	<span class="code-keyword">public</span> <span class="code-keyword">object</span> Resolve(Type tService) 
+	{ 
+		<span class="code-keyword">return</span> GetInstance(tService);
+	}
+	...
+}</pre>
+
+<div class="Caption">Code Excerpt 3: The Container, Most Of It</div>
+
+<p>A dictionary would hold the mappings. <code>GetInstance </code>would find the existing instance or create a new one. Let's continue with <code>GetInstance</code>:</p>
+
+<pre lang="cs"><span class="code-keyword">internal</span> <span class="code-keyword">class</span> ServicesContainer : IServicesRegistrar 
+{
+	...
+	<span class="code-keyword">private</span> <span class="code-keyword">object</span> GetInstance(Type tService)
+	{
+		<span class="code-keyword">if</span> (_services.ContainsKey(tService)) 
+			<span class="code-keyword">return</span> GetInstance(_services[tService]); 
+
+		<span class="code-keyword">var</span> genericDefinition = tService.GetGenericTypeDefinition(); 
+		<span class="code-keyword">if</span> (_services.ContainsKey(genericDefinition)) 
+			<span class="code-keyword">return</span> GetGenericInstance(tService, 
+				_services[genericDefinition].ServiceType); 
+
+		<span class="code-keyword">throw</span> <span class="code-keyword">new</span> Exception(<span class="code-string">"</span><span class="code-string">Type not registered"</span> + tService);
+	}
+
+	...
+}</pre>
+
+<div class="Caption">Code Excerpt 4: GetInstance</div>
+
+<p>There are three cases: </p>
+
+<ol>
+<li>The type is known, if so, we ask for <code>GetInstance </code>but this time with the <code>ServiceDescriptor </code>as parameter, this overload will be next. </li>
+
+<li>The type is unknown, but maybe it is a generic type, and its generic type definition is known, if so, we ask <code>GetGenericInstance </code>to solve the problem. </li>
+
+<li>The type is unknown, you've seen this movie so there is no need to tell you what happens next. </li>
+</ol>
+
+<pre lang="cs"><span class="code-keyword">internal</span> <span class="code-keyword">class</span> ServicesContainer : IServicesRegistrar 
+{
+	...
+	<span class="code-keyword">private</span> <span class="code-keyword">object</span> GetInstance(ServiceDescriptor serviceDescriptor) 
+	{ 
+		<span class="code-keyword">return</span> serviceDescriptor.Instance ?? ( serviceDescriptor.Instance = 
+			CreateInstance(serviceDescriptor.ServiceType)); 
+	}
+}</pre>
+
+<div class="Caption">Code Excerpt 5: GetInstance II</div>
+
+<p>Not much here, just resolved an interface to a concrete class, then asked <code>CreateInstance </code>to instantiate that class. The really interesting stuff happens in <code>CreateInstance</code>, that's why it will have to wait. Let's look at <code>GetGenericInstance </code>first:</p>
+
+<pre lang="cs"><span class="code-keyword">internal</span> <span class="code-keyword">class</span> ServicesContainer : IServicesRegistar
+{
+	...
+	<span class="code-keyword">private</span> <span class="code-keyword">object</span> GetGenericInstance(Type tService, Type genericDefinition) 
+	{ 
+		<span class="code-keyword">var</span> genericArguments = tService.GetGenericArguments(); 
+		<span class="code-keyword">var</span> actualType = genericDefinition.MakeGenericType(genericArguments); 
+		<span class="code-keyword">var</span> result = CreateInstance(actualType); 
+
+		_services[tService] = <span class="code-keyword">new</span> ServiceDescriptor 
+		{ 
+			ServiceType = actualType, 
+			Instance = result 
+		}; 
+
+		<span class="code-keyword">return</span> result; 
+	}
+}</pre>
+
+<div class="Caption">Code Excerpt 6: GetGenericInstance</div>
+
+<p>There generic arguments are taken from actual requested type <code>tService </code>and a new generic type is created from the registered type and these arguments. Then we request <code>CreateInstance </code>to help us out. Think it's time:</p>
+
+<pre lang="cs"><span class="code-keyword">internal</span> <span class="code-keyword">class</span> ServicesContainer : IServicesRegistrar
+{
+	...
+	<span class="code-keyword">private</span> <span class="code-keyword">object</span> CreateInstance(Type serviceType) 
+	{ 
+		<span class="code-keyword">var</span> ctor = serviceType.GetConstructors().First(); 
+		<span class="code-keyword">var</span> dependecies = ctor.GetParameters()
+			.Select(p =&gt; Resolve(p.ParameterType)).ToArray(); 
+
+		<span class="code-keyword">return</span> (IService)ctor.Invoke(dependecies); 
+	}
+}</pre>
+
+<div class="Caption">Code Excerpt 7: CreateInstance</div>
+
+<p>First we get a constructor, there should be only one. Then we get the constructor parameter types (dependencies) and resolve them. Finally, we create and return the instance. That's it, we just need to register types and our IoC container would be ready.</p>
+
+<pre lang="cs"><span class="code-keyword">internal</span> <span class="code-keyword">class</span> ServicesContainer : IServicesRegistrar
+{
+	...
+	<span class="code-keyword">public</span> ITypeRegistrar RegisterForAll(<span class="code-keyword">params</span> Type[] implementations) 
+	{ 
+		<span class="code-keyword">return</span> Register((IEnumerable&lt;Type&gt;)implementations); 
+	} 
+
+	<span class="code-keyword">public</span> ITypeRegistrar RegisterForAll(IEnumerable&lt;Type&gt; implementations) 
+	{ 
+		<span class="code-keyword">foreach</span> (<span class="code-keyword">var</span> impl <span class="code-keyword">in</span> implementations) 
+			RegisterFor(impl, impl.GetInterfaces()); 
+
+		<span class="code-keyword">return</span> <span class="code-keyword">this</span>; 
+	} 
+
+	<span class="code-keyword">public</span> ITypeRegistrar RegisterFor(Type implementation, <span class="code-keyword">params</span> Type[] interfaces) 
+	{ 
+		<span class="code-keyword">return</span> RegisterFor(implementation, (IEnumerable&lt;type&gt;)interfaces); 
+	} 
+
+	<span class="code-keyword">public</span> ITypeRegistrar RegisterFor
+		(Type implementation, IEnumerable&lt;type&gt; interfaces) 
+	{ 
+		<span class="code-keyword">foreach</span> (<span class="code-keyword">var</span> @interface <span class="code-keyword">in</span> interfaces) 
+			_services[GetRegistrableType(@interface)] = 
+				<span class="code-keyword">new</span> ServiceDescriptor 
+				{ 
+					ServiceType = implementation 
+				}; 
+
+		<span class="code-keyword">return</span> <span class="code-keyword">this</span>; 
+	} 
+
+	<span class="code-keyword">private</span> <span class="code-keyword">static</span> Type GetRegistrableType(Type type) 
+	{ 
+		<span class="code-keyword">return</span> type.IsGenericType &amp;&amp; type.ContainsGeneric ? 
+				type.GetGenericTypeDefinition() : type; 
+	}
+}</pre>
+
+<div class="Caption">Code Excerpt 8: Registrar Members</div>
+
+<p>As you can see, there are a couple of changes. <code>ITypeRegistrar </code>is just a base for <code>IServicesRegistrar</code>, and all <code>void </code>members have been replaced with <code>ITypeRegistrar </code>to allow method chaining. </p>
+
+<h2>Generics Registration</h2>
+
+<p>Registering generics has 2 cases which had been solved by method <code>GetRegistrableType</code>. Next section will show an example of each. Let's see the situations:</p>
+
+<ol>
+<li>Register an <a href="http://msdn.microsoft.com/en-us/library/system.type.isgenerictype(v=VS.90).aspx">open constructed type</a> (generic arguments not specified). Let's call this one an &quot;implicit registration&quot;.</li>
+
+<li>Register a <a href="http://msdn.microsoft.com/en-us/library/system.type.isgenerictype(v=VS.90).aspx">close constructed type</a> (generic arguments have been specified). Let's call this one an &quot;explicit registration&quot;.</li>
+</ol>
+
+<p>Let's take a look at both cases in the simplest way:</p>
+
+<pre lang="cs"><span class="code-keyword">public</span> <span class="code-keyword">interface</span> ITypeNamePrinter&lt;TType&gt;
+{
+	<span class="code-keyword">void</span> Print();
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> TypeNamePrinter&lt;TType&gt; : ITypeNamePrinter&lt;TType&gt;
+{
+	<span class="code-keyword">public</span> <span class="code-keyword">void</span> Print()
+	{
+		Console.WriteLine(<span class="code-keyword">typeof</span>(TType).FullName);
+	}
+}
+
+[TestFixture]
+[TestClass]
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> GenericRegistrations
+{
+	[Test]
+	[TestMethod]
+	<span class="code-keyword">public</span> <span class="code-keyword">void</span> ExplicitRegistration()
+	{
+		<span class="code-keyword">var</span> services = <span class="code-keyword">new</span> ServicesContainer();
+
+		services.RegisterForAll(<span class="code-keyword">typeof</span>(TypeNamePrinter&lt;<span class="code-keyword">int</span>&gt;),
+			<span class="code-keyword">typeof</span>(TypeNamePrinter&lt;<span class="code-keyword">string</span>&gt;), <span class="code-keyword">typeof</span>(TypeNamePrinter&lt;Type&gt;));
+
+		services.Resolve&lt;ITypeNamePrinter&lt;<span class="code-keyword">int</span>&gt;&gt;().Print();
+		services.Resolve&lt;ITypeNamePrinter&lt;<span class="code-keyword">string</span>&gt;&gt;().Print();
+		services.Resolve&lt;ITypeNamePrinter&lt;Type&gt;&gt;().Print();
+
+		Assert.Throws(<span class="code-keyword">typeof</span>(Exception), () =&gt; 
+			services.Resolve&lt;ITypeNamePrinter&lt;<span class="code-keyword">float</span>&gt;&gt;().Print());
+	}
+
+	[Test]
+	[TestMethod]
+	<span class="code-keyword">public</span> <span class="code-keyword">void</span> ImplicitRegistration()
+	{
+		<span class="code-keyword">var</span> services = <span class="code-keyword">new</span> ServicesContainer();
+
+		services.RegisterForAll(<span class="code-keyword">typeof</span>(TypeNamePrinter&lt;&gt;));
+
+		services.Resolve&lt;ITypeNamePrinter&lt;<span class="code-keyword">int</span>&gt;&gt;().Print();
+		services.Resolve&lt;ITypeNamePrinter&lt;<span class="code-keyword">string</span>&gt;&gt;().Print();
+		services.Resolve&lt;ITypeNamePrinter&lt;Type&gt;&gt;().Print();
+
+		Assert.DoesNotThrow(() =&gt; 
+			services.Resolve&lt;ITypeNamePrinter&lt;<span class="code-keyword">float</span>&gt;&gt;().Print());
+	}
+}</pre>
+
+<div class="Caption">Code Excerpt 9: Generics Registrations</div>
+
+<p>Explicit implementation sample registers every type. When asking for one not explicitly registered, an exception is thrown. Implicit registration simply registers the open constructed type and every time you ask the container for a new close constructed type's instance, it creates the registration and the instance for that type. Using combinations of implicit and explicit could result in a very flexible an interesting scenario. To end with this subject, let's look at one, a little more complicated, example with explicit registrations.</p>
+
+<pre lang="cs"><span class="code-keyword">public</span> <span class="code-keyword">interface</span> IExplicit&lt;TType&gt;
+{
+	<span class="code-keyword">void</span> Print();
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> StringExplicit : IExplicit&lt;<span class="code-keyword">string</span>&gt;
+{
+	<span class="code-keyword">public</span> <span class="code-keyword">void</span> Print()
+	{
+		Console.WriteLine(<span class="code-string">"</span><span class="code-string">System.String"</span>);
+	}
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> IntExplicit : IExplicit&lt;<span class="code-keyword">int</span>&gt;
+{
+	<span class="code-keyword">public</span> <span class="code-keyword">void</span> Print()
+	{
+		Console.WriteLine(<span class="code-string">"</span><span class="code-string">System.Int32"</span>);
+	}
+}
+
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> TypeExplicit : IExplicit&lt;Type&gt;
+{
+	<span class="code-keyword">public</span> <span class="code-keyword">void</span> Print()
+	{
+		Console.WriteLine(<span class="code-string">"</span><span class="code-string">System.Type"</span>);
+	}
+}
+
+[TestFixture]
+[TestClass]
+<span class="code-keyword">public</span> <span class="code-keyword">class</span> ExplicitRegistrations
+{
+	[Test]
+	[TestMethod]
+	<span class="code-keyword">public</span> <span class="code-keyword">void</span> Test()
+	{
+		<span class="code-keyword">var</span> services = <span class="code-keyword">new</span> ServicesContainer();
+		services.RegisterForAll(<span class="code-keyword">typeof</span>(StringExplicit), 
+			<span class="code-keyword">typeof</span>(IntExplicit), <span class="code-keyword">typeof</span>(TypeExplicit));
+
+		services.Resolve&lt;IExplicit&lt;<span class="code-keyword">int</span>&gt;&gt;().Print();
+		services.Resolve&lt;IExplicit&lt;<span class="code-keyword">string</span>&gt;&gt;().Print();
+		services.Resolve&lt;IExplicit&lt;Type&gt;&gt;().Print();
+	}
+}</pre>
+
+<div class="Caption">Code Excerpt 10: Explicit registrations</div>
+
+<h2>IoC Kingdom</h2>
+
+<p>Our new IoC Container is ready. Let's play with it:</p>
+
+<pre lang="cs">    <span class="code-keyword">public</span> <span class="code-keyword">interface</span> IKing : IService
+    {
+        IBoss&lt;IGuard&gt; Captain { <span class="code-keyword">get</span>; }
+        IBoss&lt;IMaid&gt; Mistress { <span class="code-keyword">get</span>; }
+
+        <span class="code-keyword">void</span> RuleTheCastle();
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">interface</span> IServant : IService
+    {
+        <span class="code-keyword">void</span> Serve();
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">interface</span> IGuard : IServant
+    {
+
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">interface</span> IMaid : IServant
+    {
+
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">interface</span> IBoss&lt;TServant&gt;
+        where TServant : IServant
+    {
+        TServant Servant { <span class="code-keyword">get</span>; }
+        <span class="code-keyword">void</span> OrderServantToServe();
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">class</span> King : Service, IKing
+    {
+        <span class="code-keyword">public</span> King(IBoss&lt;IGuard&gt; captain, IBoss&lt;IMaid&gt; mistress)
+        {
+            Captain = captain;
+            Mistress = mistress;
+        }
+
+        <span class="code-keyword">public</span> <span class="code-keyword">void</span> RuleTheCastle()
+        {
+            Console.WriteLine(<span class="code-string">"</span><span class="code-string">Rule!!!"</span>);
+
+            Captain.OrderServantToServe();
+            Mistress.OrderServantToServe();
+        }
+
+        <span class="code-keyword">public</span> IBoss&lt;IGuard&gt; Captain
+        {
+            <span class="code-keyword">get</span>;
+            <span class="code-keyword">private</span> <span class="code-keyword">set</span>;
+        }
+
+        <span class="code-keyword">public</span> IBoss&lt;IMaid&gt; Mistress
+        {
+            <span class="code-keyword">get</span>;
+            <span class="code-keyword">private</span> <span class="code-keyword">set</span>;
+        }
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">class</span> Boss&lt;TServant&gt; : Service, IBoss&lt;TServant&gt;
+        where TServant : IServant
+    {
+        <span class="code-keyword">public</span> Boss(TServant servant)
+        {
+            Servant = servant;
+        }
+
+        <span class="code-keyword">public</span> TServant Servant
+        {
+            <span class="code-keyword">get</span>;
+            <span class="code-keyword">private</span> <span class="code-keyword">set</span>;
+        }
+
+        <span class="code-keyword">public</span> <span class="code-keyword">void</span> OrderServantToServe()
+        {
+            Servant.Serve();
+        }
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">class</span> Guard : Service, IGuard
+    {
+        <span class="code-keyword">public</span> <span class="code-keyword">void</span> Serve()
+        {
+            Console.WriteLine(<span class="code-string">"</span><span class="code-string">Watch!!"</span>);
+        }
+    }
+
+    <span class="code-keyword">public</span> <span class="code-keyword">class</span> Maid : Service, IMaid
+    {
+        <span class="code-keyword">public</span> <span class="code-keyword">void</span> Serve()
+        {
+            Console.WriteLine(<span class="code-string">"</span><span class="code-string">Clean!!"</span>);
+        }
+    }</pre>
+
+<div class="Caption">Code Excerpt 11: The King and the Castle</div>
+
+<p>A test project has been included along with the solution, it contains this sample, which is a dummy but has everything we need for a test. A couple of types useful for registration are also included, but they are too lame to be explained here.</p>
+
+<p>Before saying good bye, let's see how to use the container.</p>
+
+<pre lang="cs"><span class="code-keyword">var</span> services = <span class="code-keyword">new</span> ServicesContainer(); 
+services.RegisterForAll(ServicesImplementation .FromAssemblyContaining&lt;IKing&gt;());
+
+<span class="code-keyword">var</span> king = services.Resolve&lt;IKing&gt;();
+king.RuleTheCastle();</pre>
+
+<div class="Caption">Code Excerpt 12: Using the Container</div>
+
+<p>I hope it will be useful!!! Enjoy!!<br /><h2>References<a id="RR" name="RR" title="RR" class="anchor"></a>&nbsp;</h2><p><ol><li><a href="http://martinfowler.com/articles/injection.html" id="MF1" name="MF1" title="MF1" class="anchor">Martin Fowler, Inversion of Control Containers and the Dependency Injection pattern&nbsp;</a></li><li><a href="http://en.wikipedia.org/wiki/Inversion_of_control" id="W1" name="W1" title="W1" class="anchor">Wikipedia, Inversion of control&nbsp;</a></li></ol></p><h2>&nbsp;</h2></p><p>&nbsp;</p>
+
+
+						</div>
+						
+
+						
+						
+						<h2>License</h2>
+						<div id="LicenseTerms"><p>This article, along with any associated source code and files, is licensed under <a href="http://www.codeproject.com/info/cpol10.aspx" rel="license">The Code Project Open License (CPOL)</a></p></div>
+						
+
+						<div class="float-right" style="margin:20px 0 0 0;border:1px solid #ccc">
+						<div class="msg-300x250" data-format="300x250" data-type="ad" data-publisher="lqm.codeproject.site" data-zone="ros"  data-loadOnView='true'  data-tags='C#, Architect, Dev, Beginner,rating4.5'></div>
+						</div>
+
+						
+						<h2 id="ctl00_AboutHeading">About the Author</h2>
+						
+
+<div class="container">
+<div style="width:210px;overflow:hidden;float:left;text-align:center">
+	<img id="ctl00_AboutAuthorRptr_ctl00_AboutAuthor_memberPhoto" class="profile-pic" src="http://www.codeproject.com/script/Membership/ProfileImages/{3cc9dc58-28e6-4916-b606-56500b841a8c}.jpg" style="border-width:0px;transform:rotate(-2deg);" />
+</div>
+<div class="container-member float-left" style="width:235px">
+	<b><a id="ctl00_AboutAuthorRptr_ctl00_AboutAuthor_memberProfileLink" class="author" href="/Members/Erich-Ledesma">Erich Ledesma</a></b>
+	<div class="company">
+		<span id="ctl00_AboutAuthorRptr_ctl00_AboutAuthor_memberJobTitle">Software Developer</span>
+		<span id="ctl00_AboutAuthorRptr_ctl00_AboutAuthor_memberCompany">SunHotels</span> 
+		<br /><span id="ctl00_AboutAuthorRptr_ctl00_AboutAuthor_memberLocation">Spain <img src="/script/Geo/Images/ES.gif" alt="Spain" width="16px" height="11px" /></span>
+	</div>
+</div>
+	
+<div class="padded-top float-left clearfix" style="width:600px">
+	I Received a Bachelor's Degree in Computer Science at the Mathematics and Computer Science Faculty, University of Havana, Cuba.<br />
+&nbsp;<br />
+Programming Languages I use:<br />
+C#, C++, Javascript, Delphi, Java, PHP, and others (less frequently).
+
+	
+
+	
+</div>
+</div><br />
+						
+						
+
+						<div class="clearfix"></div>
+
+						<div style="padding-top:8px">
+							<a class="anchorLink" href="/Articles/206125/An-IoC-Container-in-min#_articleTop">Article Top</a>
+						</div>
+
+						
+						<div style="margin:auto;height:90px;margin-top:10px" class="sticky-stop"> 
+							<div class="msg-728x90" data-format="728x90" data-type="ad" data-publisher="lqm.codeproject.site" data-zone="bottom"  data-loadOnView='true'  data-tags='C#, Architect, Dev, Beginner,pos_bottom'></div>
+						</div>
+						
+					
+
+				    
+					</form>
+
+				</div>
+
+				
+				
+
+					<h2>Comments and Discussions</h2>
+					<a class="float-left" name="_comments" id="_comments">&nbsp;</a><div id="_MessageBoardctl00_MessageBoard" onclick="return SwitchMessage(event, null)">
+	<table id="ForumTable" class="forum relaxed" cellpadding="0" cellspacing="0">
+		<tr>
+			<td><a name="xx0xx"></a><table border="0" cellpadding="2px" cellspacing="0" width="100%">
+				<tr class="navbar">
+					<td></td><td style="text-align:right;width:50%;"></td><td style="text-align:right;white-space:nowrap;"><span class="nav-link disabled">First</span> <span class="nav-link disabled">Prev</span><a class="nav-link" name="Frm_HoverNL" href="/Articles/206125/An-IoC-Container-in-min?fid=1631154&amp;df=90&amp;mpp=25&amp;noise=3&amp;prof=False&amp;sort=Position&amp;view=Normal&amp;spc=Relaxed&amp;fr=26#xx0xx">Next</a></td>
+				</tr>
+			</table></td>
+		</tr><tr>
+			<td><table border="0" cellpadding="0" cellspacing="0" width="100%" class="fixed-layout blank-background">
+				<tr>
+					<td><img src="http://s.codeproject.com/script/Forums/Images/t.gif" border="0" width="1px" height="5px" alt="" /></td>
+				</tr><tr id="F4684382_h0" class="header hover-row root">
+					<td class="subject-line normal " width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr>
+							<td width="20px" class="indent"><a name="xx4684382xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="subject hover-container"><a class="message-link" name="4684382" parent="0" thread="4684382" href="/Messages/4684382/My-vote-of.aspx">My vote of 5</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="http://s.codeproject.com/script/Forums/Images/pin.png" border="0" align="top" alt="Pin" width="13px" height="13px" /></a></td><td class="icon"><img border="0" src="http://s.codeproject.com/App_Themes/CodeProject/Img/icn-pro-16.png" title="professional" alt="professional" height="16px" /></td><td class="author"><a href="/script/Membership/View.aspx?mid=8409915">Artem Elkin</a></td><td class="date">21-Oct-13  11:11&nbsp;</td>
+						</tr>
+					</table></td>
+				</tr><tr id="F4684382_h1" class="content root selected" style="display:none;">
+					<td class="normal" width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr valign="top">
+							<td class="indent align-right" style="width:20px;"><div class="voteform vertical" ownerid="8409915" msgid="4684382" votingType="GoodOrBad">
+
+							</div><img src="http://s.codeproject.com/script/Forums/Images/t.gif" height="1px" width="20px" alt="" /></td><td class="text"><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+								<tr>
+									<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+										<tr>
+											<td colspan="2"><img src="/script/Forums/Images/thumbs_up.gif" align="top" alt="Thumbs Up | :thumbsup:" /> <br /></td>
+										</tr>
+									</table></td>
+								</tr>
+							</table></td>
+						</tr>
+					</table></td>
+				</tr><tr id="F4645146_h0" class="header hover-row root">
+					<td class="subject-line normal " width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr>
+							<td width="20px" class="indent"><a name="xx4645146xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="subject hover-container"><a class="message-link" name="4645146" parent="0" thread="4645146" href="/Messages/4645146/My-vote-of.aspx">My vote of 2</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="http://s.codeproject.com/script/Forums/Images/pin.png" border="0" align="top" alt="Pin" width="13px" height="13px" /></a></td><td class="icon"><img border="0" src="http://s.codeproject.com/App_Themes/CodeProject/Img/icn-member-16.gif" title="member" alt="member" height="16px" /></td><td class="author"><a href="/script/Membership/View.aspx?mid=9922752">sathishvenkat</a></td><td class="date">25-Aug-13  20:10&nbsp;</td>
+						</tr>
+					</table></td>
+				</tr><tr id="F4645146_h1" class="content root selected" style="display:none;">
+					<td class="normal" width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr valign="top">
+							<td class="indent align-right" style="width:20px;"><div class="voteform vertical" ownerid="9922752" msgid="4645146" votingType="GoodOrBad">
+
+							</div><img src="http://s.codeproject.com/script/Forums/Images/t.gif" height="1px" width="20px" alt="" /></td><td class="text"><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+								<tr>
+									<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+										<tr>
+											<td colspan="2">i understand but small doubts is there<br /></td>
+										</tr>
+									</table></td>
+								</tr>
+							</table></td>
+						</tr>
+					</table></td>
+				</tr><tr id="F4539976_h0" class="header hover-row root">
+					<td class="subject-line normal " width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr>
+							<td width="20px" class="indent"><a name="xx4539976xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="subject hover-container"><a class="message-link" name="4539976" parent="0" thread="4539976" href="/Messages/4539976/My-vote-of.aspx">My vote of 5</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="http://s.codeproject.com/script/Forums/Images/pin.png" border="0" align="top" alt="Pin" width="13px" height="13px" /></a></td><td class="icon"><img border="0" src="http://s.codeproject.com/App_Themes/CodeProject/Img/icn-MVP-16.gif" title="mvp" alt="mvp" height="16px" /></td><td class="author"><a href="/script/Membership/View.aspx?mid=7059641">Kanasz Robert</a></td><td class="date">13-Apr-13  5:42&nbsp;</td>
+						</tr>
+					</table></td>
+				</tr><tr id="F4539976_h1" class="content root selected" style="display:none;">
+					<td class="normal" width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr valign="top">
+							<td class="indent align-right" style="width:20px;"><div class="voteform vertical" ownerid="7059641" msgid="4539976" votingType="GoodOrBad">
+
+							</div><img src="http://s.codeproject.com/script/Forums/Images/t.gif" height="1px" width="20px" alt="" /></td><td class="text"><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+								<tr>
+									<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+										<tr>
+											<td colspan="2">very interesting<br /></td>
+										</tr>
+									</table></td>
+								</tr>
+							</table></td>
+						</tr>
+					</table></td>
+				</tr><tr id="F4251035_h0" class="header hover-row root">
+					<td class="subject-line normal " width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr>
+							<td width="20px" class="indent"><a name="xx4251035xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_question.gif" alt="Question" /></td><td class="subject hover-container"><a class="message-link" name="4251035" parent="0" thread="4251035" href="/Messages/4251035/Discussion-for-IOC-was-required.aspx">Discussion for IOC was required</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="http://s.codeproject.com/script/Forums/Images/pin.png" border="0" align="top" alt="Pin" width="13px" height="13px" /></a></td><td class="icon"><img border="0" src="http://s.codeproject.com/App_Themes/CodeProject/Img/icn-member-16.gif" title="member" alt="member" height="16px" /></td><td class="author"><a href="/script/Membership/View.aspx?mid=525007">Tridip Bhattacharjee</a></td><td class="date">14-May-12  20:58&nbsp;</td>
+						</tr>
+					</table></td>
+				</tr><tr id="F4251035_h1" class="content root selected" style="display:none;">
+					<td class="normal" width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr valign="top">
+							<td class="indent align-right" style="width:20px;"><div class="voteform vertical" ownerid="525007" msgid="4251035" votingType="GoodOrBad">
+
+							</div><img src="http://s.codeproject.com/script/Forums/Images/t.gif" height="1px" width="20px" alt="" /></td><td class="text"><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+								<tr>
+									<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+										<tr>
+											<td colspan="2">when you publish any article then fresher & advance all type of users view that. you just start developing IOC. the person who never hard about that and its utility & use then he/she will not able to understand what are you talking about. it would be better always start the story from scratch. if possible then please discuss what is IOC. what is the utility of IOC. when it is required. in what kind of situation IOC will be required. why one should use it...etc.<br />
+&nbsp;<br />
+thanks<br />
+<div class="signature">tbhattacharjee</div><br /></td>
+										</tr>
+									</table></td>
+								</tr>
+							</table></td>
+						</tr>
+					</table></td>
+				</tr><tr id="F4251057_h0" class="header hover-row">
+					<td class="subject-line normal " width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr>
+							<td width="38px" class="indent"><a name="xx4251057xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_answer.gif" alt="Answer" /></td><td class="subject hover-container"><a class="message-link" name="4251057" parent="4251035" thread="4251035" href="/Messages/4251057/Re-Discussion-for-IOC-was-required.aspx">Re: Discussion for IOC was required</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="http://s.codeproject.com/script/Forums/Images/pin.png" border="0" align="top" alt="Pin" width="13px" height="13px" /></a></td><td class="icon"><img border="0" src="http://s.codeproject.com/App_Themes/CodeProject/Img/icn-member-16.gif" title="member" alt="member" height="16px" /></td><td class="author"><a href="/script/Membership/View.aspx?mid=3836917">Erich Ledesma</a></td><td class="date">14-May-12  21:17&nbsp;</td>
+						</tr>
+					</table></td>
+				</tr><tr id="F4251057_h1" class="content selected" style="display:none;">
+					<td class="normal" width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr valign="top">
+							<td class="indent align-right" style="width:38px;"><div class="voteform vertical" ownerid="3836917" msgid="4251057" votingType="GoodOrBad">
+
+							</div><img src="http://s.codeproject.com/script/Forums/Images/t.gif" height="1px" width="38px" alt="" /></td><td class="text"><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+								<tr>
+									<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+										<tr>
+											<td colspan="2">I agree. But I think I'll better just include some references.<br />
+&nbsp;<br />
+Thanks for your comment,<br />
+&nbsp;<br />
+See U around,<br />
+Erich<br /></td>
+										</tr>
+									</table></td>
+								</tr>
+							</table></td>
+						</tr>
+					</table></td>
+				</tr><tr id="F4207647_h0" class="header hover-row root">
+					<td class="subject-line normal " width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr>
+							<td width="20px" class="indent"><a name="xx4207647xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_question.gif" alt="Question" /></td><td class="subject hover-container"><a class="message-link" name="4207647" parent="0" thread="4207647" href="/Messages/4207647/Excelente.aspx">Excelente</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="http://s.codeproject.com/script/Forums/Images/pin.png" border="0" align="top" alt="Pin" width="13px" height="13px" /></a></td><td class="icon"><img border="0" src="http://s.codeproject.com/App_Themes/CodeProject/Img/icn-member-16.gif" title="member" alt="member" height="16px" /></td><td class="author"><a href="/script/Membership/View.aspx?mid=4269350">craliaga</a></td><td class="date">29-Mar-12  10:25&nbsp;</td>
+						</tr>
+					</table></td>
+				</tr><tr id="F4207647_h1" class="content root selected" style="display:none;">
+					<td class="normal" width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr valign="top">
+							<td class="indent align-right" style="width:20px;"><div class="voteform vertical" ownerid="4269350" msgid="4207647" votingType="GoodOrBad">
+
+							</div><img src="http://s.codeproject.com/script/Forums/Images/t.gif" height="1px" width="20px" alt="" /></td><td class="text"><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+								<tr>
+									<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+										<tr>
+											<td colspan="2">Gran articulo, muy útil gracias<br /></td>
+										</tr>
+									</table></td>
+								</tr>
+							</table></td>
+						</tr>
+					</table></td>
+				</tr><tr id="F4207651_h0" class="header hover-row">
+					<td class="subject-line normal " width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr>
+							<td width="38px" class="indent"><a name="xx4207651xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_answer.gif" alt="Answer" /></td><td class="subject hover-container"><a class="message-link" name="4207651" parent="4207647" thread="4207647" href="/Messages/4207651/Re-Excelente.aspx">Re: Excelente</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="http://s.codeproject.com/script/Forums/Images/pin.png" border="0" align="top" alt="Pin" width="13px" height="13px" /></a></td><td class="icon"><img border="0" src="http://s.codeproject.com/App_Themes/CodeProject/Img/icn-member-16.gif" title="member" alt="member" height="16px" /></td><td class="author"><a href="/script/Membership/View.aspx?mid=3836917">Erich Ledesma</a></td><td class="date">29-Mar-12  10:37&nbsp;</td>
+						</tr>
+					</table></td>
+				</tr><tr id="F4207651_h1" class="content selected" style="display:none;">
+					<td class="normal" width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr valign="top">
+							<td class="indent align-right" style="width:38px;"><div class="voteform vertical" ownerid="3836917" msgid="4207651" votingType="GoodOrBad">
+
+							</div><img src="http://s.codeproject.com/script/Forums/Images/t.gif" height="1px" width="38px" alt="" /></td><td class="text"><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+								<tr>
+									<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+										<tr>
+											<td colspan="2">Me alegro que te gustara...<br />
+&nbsp;<br />
+Nos vemos por aquí<br /></td>
+										</tr>
+									</table></td>
+								</tr>
+							</table></td>
+						</tr>
+					</table></td>
+				</tr><tr id="F3959971_h0" class="header hover-row root">
+					<td class="subject-line normal " width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr>
+							<td width="20px" class="indent"><a name="xx3959971xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_question.gif" alt="Question" /></td><td class="subject hover-container"><a class="message-link" name="3959971" parent="0" thread="3959971" href="/Messages/3959971/nice.aspx">nice</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="http://s.codeproject.com/script/Forums/Images/pin.png" border="0" align="top" alt="Pin" width="13px" height="13px" /></a></td><td class="icon"><img border="0" src="http://s.codeproject.com/App_Themes/CodeProject/Img/icn-member-16.gif" title="member" alt="member" height="16px" /></td><td class="author"><a href="/script/Membership/View.aspx?mid=3062467">CIDev</a></td><td class="date">15-Jul-11  6:11&nbsp;</td>
+						</tr>
+					</table></td>
+				</tr><tr id="F3959971_h1" class="content root selected" style="display:none;">
+					<td class="normal" width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr valign="top">
+							<td class="indent align-right" style="width:20px;"><div class="voteform vertical" ownerid="3062467" msgid="3959971" votingType="GoodOrBad">
+
+							</div><img src="http://s.codeproject.com/script/Forums/Images/t.gif" height="1px" width="20px" alt="" /></td><td class="text"><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+								<tr>
+									<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+										<tr>
+											<td colspan="2">A clearly written, nice article.<br />
+<div class="signature">Just because the code works, it doesn't mean that it is good code.</div><br /></td>
+										</tr>
+									</table></td>
+								</tr>
+							</table></td>
+						</tr>
+					</table></td>
+				</tr><tr id="F3953846_h0" class="header hover-row root">
+					<td class="subject-line normal " width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr>
+							<td width="20px" class="indent"><a name="xx3953846xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="subject hover-container"><a class="message-link" name="3953846" parent="0" thread="3953846" href="/Messages/3953846/My-vote-of.aspx">My vote of 5</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="http://s.codeproject.com/script/Forums/Images/pin.png" border="0" align="top" alt="Pin" width="13px" height="13px" /></a></td><td class="icon"><img border="0" src="http://s.codeproject.com/App_Themes/CodeProject/Img/icn-member-16.gif" title="member" alt="member" height="16px" /></td><td class="author"><a href="/script/Membership/View.aspx?mid=640727">L Hills</a></td><td class="date">11-Jul-11  0:07&nbsp;</td>
+						</tr>
+					</table></td>
+				</tr><tr id="F3953846_h1" class="content root selected" style="display:none;">
+					<td class="normal" width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr valign="top">
+							<td class="indent align-right" style="width:20px;"><div class="voteform vertical" ownerid="640727" msgid="3953846" votingType="GoodOrBad">
+
+							</div><img src="http://s.codeproject.com/script/Forums/Images/t.gif" height="1px" width="20px" alt="" /></td><td class="text"><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+								<tr>
+									<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+										<tr>
+											<td colspan="2">Very informative and i like the writing style. thanks.<br /></td>
+										</tr>
+									</table></td>
+								</tr>
+							</table></td>
+						</tr>
+					</table></td>
+				</tr><tr id="F3956372_h0" class="header hover-row">
+					<td class="subject-line normal " width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr>
+							<td width="38px" class="indent"><a name="xx3956372xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="subject hover-container"><a class="message-link" name="3956372" parent="3953846" thread="3953846" href="/Messages/3956372/Re-My-vote-of.aspx">Re: My vote of 5</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="http://s.codeproject.com/script/Forums/Images/pin.png" border="0" align="top" alt="Pin" width="13px" height="13px" /></a></td><td class="icon"><img border="0" src="http://s.codeproject.com/App_Themes/CodeProject/Img/icn-member-16.gif" title="member" alt="member" height="16px" /></td><td class="author"><a href="/script/Membership/View.aspx?mid=3836917">Erich Ledesma</a></td><td class="date">12-Jul-11  22:17&nbsp;</td>
+						</tr>
+					</table></td>
+				</tr><tr id="F3956372_h1" class="content selected" style="display:none;">
+					<td class="normal" width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr valign="top">
+							<td class="indent align-right" style="width:38px;"><div class="voteform vertical" ownerid="3836917" msgid="3956372" votingType="GoodOrBad">
+
+							</div><img src="http://s.codeproject.com/script/Forums/Images/t.gif" height="1px" width="38px" alt="" /></td><td class="text"><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+								<tr>
+									<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+										<tr>
+											<td colspan="2">Thank you. I'll try to keep the same style for the next ones.<br />
+&nbsp;<br />
+Cheers<br /></td>
+										</tr>
+									</table></td>
+								</tr>
+							</table></td>
+						</tr>
+					</table></td>
+				</tr><tr id="F3953821_h0" class="header hover-row root">
+					<td class="subject-line normal " width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr>
+							<td width="20px" class="indent"><a name="xx3953821xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="subject hover-container"><a class="message-link" name="3953821" parent="0" thread="3953821" href="/Messages/3953821/My-vote-of.aspx">My vote of 5</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="http://s.codeproject.com/script/Forums/Images/pin.png" border="0" align="top" alt="Pin" width="13px" height="13px" /></a></td><td class="icon"><img border="0" src="http://s.codeproject.com/App_Themes/CodeProject/Img/icn-member-16.gif" title="member" alt="member" height="16px" /></td><td class="author"><a href="/script/Membership/View.aspx?mid=4228556">Rhuros</a></td><td class="date">10-Jul-11  23:48&nbsp;</td>
+						</tr>
+					</table></td>
+				</tr><tr id="F3953821_h1" class="content root selected" style="display:none;">
+					<td class="normal" width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr valign="top">
+							<td class="indent align-right" style="width:20px;"><div class="voteform vertical" ownerid="4228556" msgid="3953821" votingType="GoodOrBad">
+
+							</div><img src="http://s.codeproject.com/script/Forums/Images/t.gif" height="1px" width="20px" alt="" /></td><td class="text"><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+								<tr>
+									<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+										<tr>
+											<td colspan="2">Good Work<br /></td>
+										</tr>
+									</table></td>
+								</tr>
+							</table></td>
+						</tr>
+					</table></td>
+				</tr><tr id="F3956371_h0" class="header hover-row">
+					<td class="subject-line normal " width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr>
+							<td width="38px" class="indent"><a name="xx3956371xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="subject hover-container"><a class="message-link" name="3956371" parent="3953821" thread="3953821" href="/Messages/3956371/Re-My-vote-of.aspx">Re: My vote of 5</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="http://s.codeproject.com/script/Forums/Images/pin.png" border="0" align="top" alt="Pin" width="13px" height="13px" /></a></td><td class="icon"><img border="0" src="http://s.codeproject.com/App_Themes/CodeProject/Img/icn-member-16.gif" title="member" alt="member" height="16px" /></td><td class="author"><a href="/script/Membership/View.aspx?mid=3836917">Erich Ledesma</a></td><td class="date">12-Jul-11  22:16&nbsp;</td>
+						</tr>
+					</table></td>
+				</tr><tr id="F3956371_h1" class="content selected" style="display:none;">
+					<td class="normal" width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr valign="top">
+							<td class="indent align-right" style="width:38px;"><div class="voteform vertical" ownerid="3836917" msgid="3956371" votingType="GoodOrBad">
+
+							</div><img src="http://s.codeproject.com/script/Forums/Images/t.gif" height="1px" width="38px" alt="" /></td><td class="text"><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+								<tr>
+									<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+										<tr>
+											<td colspan="2">Thank you soo much. I'm very glad you'd enjoyed it.<br />
+&nbsp;<br />
+Greetings<br /></td>
+										</tr>
+									</table></td>
+								</tr>
+							</table></td>
+						</tr>
+					</table></td>
+				</tr><tr id="F3952743_h0" class="header hover-row root">
+					<td class="subject-line normal " width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr>
+							<td width="20px" class="indent"><a name="xx3952743xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_question.gif" alt="Question" /></td><td class="subject hover-container"><a class="message-link" name="3952743" parent="0" thread="3952743" href="/Messages/3952743/Have-a-look-at-LightCore.aspx">Have a look at LightCore</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="http://s.codeproject.com/script/Forums/Images/pin.png" border="0" align="top" alt="Pin" width="13px" height="13px" /></a></td><td class="icon"><img border="0" src="http://s.codeproject.com/App_Themes/CodeProject/Img/icn-member-16.gif" title="member" alt="member" height="16px" /></td><td class="author"><a href="/script/Membership/View.aspx?mid=4202313">Daniel M. Camenzind</a></td><td class="date">8-Jul-11  23:20&nbsp;</td>
+						</tr>
+					</table></td>
+				</tr><tr id="F3952743_h1" class="content root selected" style="display:none;">
+					<td class="normal" width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr valign="top">
+							<td class="indent align-right" style="width:20px;"><div class="voteform vertical" ownerid="4202313" msgid="3952743" votingType="GoodOrBad">
+
+							</div><img src="http://s.codeproject.com/script/Forums/Images/t.gif" height="1px" width="20px" alt="" /></td><td class="text"><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+								<tr>
+									<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+										<tr>
+											<td colspan="2">You should have a look at <a href="http://lightcore.ch/en/default.aspx">http://lightcore.ch/</a>[<a href="http://lightcore.ch/en/default.aspx" target="_blank" title="New Window">^</a>]. <br />
+&nbsp;<br />
+LightCore is ...<br />
+... in its basic version about 35kb small and has only 3 references (System, System.Core and mscorlib).<br />
+... lightweight, loaded quickly and comfortable to deploy.<br />
+... not overloaded and contains a reasonable feature set and therefore application is easy.<br />
+... available for .NET 3.5, .NET 4.0, Silverlight 3 and .NET Compact Framework 3.5.<br />
+... an early adopter and uses the latest technologies from .NET 3.5 and .NET 4.0.<br />
+... fast: In comparison to other dependency injection containers LightCore stands out by its amazing speed.<br />
+... available with German and English documentation and website.<br />
+... usable flexibly, by either using only the basic version or by using the basic version in combination with additional components.<br />
+... always up to date and being improved thanks to feedback and criticism from the community.<br /></td>
+										</tr>
+									</table></td>
+								</tr>
+							</table></td>
+						</tr>
+					</table></td>
+				</tr><tr id="F3956369_h0" class="header hover-row">
+					<td class="subject-line normal " width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr>
+							<td width="38px" class="indent"><a name="xx3956369xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_answer.gif" alt="Answer" /></td><td class="subject hover-container"><a class="message-link" name="3956369" parent="3952743" thread="3952743" href="/Messages/3956369/Re-Have-a-look-at-LightCore.aspx">Re: Have a look at LightCore</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="http://s.codeproject.com/script/Forums/Images/pin.png" border="0" align="top" alt="Pin" width="13px" height="13px" /></a></td><td class="icon"><img border="0" src="http://s.codeproject.com/App_Themes/CodeProject/Img/icn-member-16.gif" title="member" alt="member" height="16px" /></td><td class="author"><a href="/script/Membership/View.aspx?mid=3836917">Erich Ledesma</a></td><td class="date">12-Jul-11  22:16&nbsp;</td>
+						</tr>
+					</table></td>
+				</tr><tr id="F3956369_h1" class="content selected" style="display:none;">
+					<td class="normal" width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr valign="top">
+							<td class="indent align-right" style="width:38px;"><div class="voteform vertical" ownerid="3836917" msgid="3956369" votingType="GoodOrBad">
+
+							</div><img src="http://s.codeproject.com/script/Forums/Images/t.gif" height="1px" width="38px" alt="" /></td><td class="text"><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+								<tr>
+									<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+										<tr>
+											<td colspan="2">I promise I will as soon as I have the time. Which is harder every day. Thanx for the hint. You know? for the last couple of years, most of the new things I learn come from developers comunities like this one. I think it is great people like you share what they use, what they like.<br />
+&nbsp;<br />
+Thanx for the link!! I promise I will use it and give you some feed back.<br /></td>
+										</tr>
+									</table></td>
+								</tr>
+							</table></td>
+						</tr>
+					</table></td>
+				</tr><tr id="F3920121_h0" class="header hover-row root">
+					<td class="subject-line normal " width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr>
+							<td width="20px" class="indent"><a name="xx3920121xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="subject hover-container"><a class="message-link" name="3920121" parent="0" thread="3920121" href="/Messages/3920121/Good-article-is-MEF-available-in-CF.aspx">Good article ... is MEF available in CF</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="http://s.codeproject.com/script/Forums/Images/pin.png" border="0" align="top" alt="Pin" width="13px" height="13px" /></a></td><td class="icon"><img border="0" src="http://s.codeproject.com/App_Themes/CodeProject/Img/icn-MVP-16.gif" title="mvp" alt="mvp" height="16px" /></td><td class="author"><a href="/script/Membership/View.aspx?mid=1335831">Shivprasad <b>koirala</b></a></td><td class="date">8-Jun-11  16:32&nbsp;</td>
+						</tr>
+					</table></td>
+				</tr><tr id="F3920121_h1" class="content root selected" style="display:none;">
+					<td class="normal" width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr valign="top">
+							<td class="indent align-right" style="width:20px;"><div class="voteform vertical" ownerid="1335831" msgid="3920121" votingType="GoodOrBad">
+
+							</div><img src="http://s.codeproject.com/script/Forums/Images/t.gif" height="1px" width="20px" alt="" /></td><td class="text"><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+								<tr>
+									<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+										<tr>
+											<td colspan="2">Nice article , sorry for a lame question never worked with CF is MEF available in CF by any chance.<br />
+<div class="signature">My book .NET interview questions with 500 mostly asked questions in .NET world  <a href="http://www.questpond.com">.NET Interview questions and answers</a></div><br /></td>
+										</tr>
+									</table></td>
+								</tr>
+							</table></td>
+						</tr>
+					</table></td>
+				</tr><tr id="F3920288_h0" class="header hover-row">
+					<td class="subject-line normal " width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr>
+							<td width="38px" class="indent"><a name="xx3920288xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="subject hover-container"><a class="message-link" name="3920288" parent="3920121" thread="3920121" href="/Messages/3920288/Re-Good-article-is-MEF-available-in-CF-modified.aspx">Re: Good article ... is MEF available in CF [modified]</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="http://s.codeproject.com/script/Forums/Images/pin.png" border="0" align="top" alt="Pin" width="13px" height="13px" /></a></td><td class="icon"><img border="0" src="http://s.codeproject.com/App_Themes/CodeProject/Img/icn-member-16.gif" title="member" alt="member" height="16px" /></td><td class="author"><a href="/script/Membership/View.aspx?mid=3836917">Erich Ledesma</a></td><td class="date">8-Jun-11  20:21&nbsp;</td>
+						</tr>
+					</table></td>
+				</tr><tr id="F3920288_h1" class="content selected" style="display:none;">
+					<td class="normal" width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr valign="top">
+							<td class="indent align-right" style="width:38px;"><div class="voteform vertical" ownerid="3836917" msgid="3920288" votingType="GoodOrBad">
+
+							</div><img src="http://s.codeproject.com/script/Forums/Images/t.gif" height="1px" width="38px" alt="" /></td><td class="text"><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+								<tr>
+									<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+										<tr>
+											<td colspan="2">There is not such thing as a lame question. I don't know MEF, just went to google to find out what it was. If I hear something I'll get back to you.<br />
+&nbsp;<br />
+I'm glad you liked my article.<br />
+<div class="signature"><br />
+<div class="modified">modified on Thursday, June 9, 2011 5:02 AM</div></div><br /></td>
+										</tr>
+									</table></td>
+								</tr>
+							</table></td>
+						</tr>
+					</table></td>
+				</tr><tr id="F3920436_h0" class="header hover-row">
+					<td class="subject-line normal " width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr>
+							<td width="56px" class="indent"><a name="xx3920436xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="subject hover-container"><a class="message-link" name="3920436" parent="3920288" thread="3920121" href="/Messages/3920436/Re-Good-article-is-MEF-available-in-CF.aspx">Re: Good article ... is MEF available in CF</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="http://s.codeproject.com/script/Forums/Images/pin.png" border="0" align="top" alt="Pin" width="13px" height="13px" /></a></td><td class="icon"><img border="0" src="http://s.codeproject.com/App_Themes/CodeProject/Img/icn-MVP-16.gif" title="mvp" alt="mvp" height="16px" /></td><td class="author"><a href="/script/Membership/View.aspx?mid=1335831">Shivprasad <b>koirala</b></a></td><td class="date">8-Jun-11  23:01&nbsp;</td>
+						</tr>
+					</table></td>
+				</tr><tr id="F3920436_h1" class="content selected" style="display:none;">
+					<td class="normal" width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr valign="top">
+							<td class="indent align-right" style="width:56px;"><div class="voteform vertical" ownerid="1335831" msgid="3920436" votingType="GoodOrBad">
+
+							</div><img src="http://s.codeproject.com/script/Forums/Images/t.gif" height="1px" width="56px" alt="" /></td><td class="text"><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+								<tr>
+									<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+										<tr>
+											<td colspan="2">MEF Managed extensibility framework.<br />
+<div class="signature">My book .NET interview questions with 500 mostly asked questions in .NET world  <a href="http://www.questpond.com">.NET Interview questions and answers</a></div><br /></td>
+										</tr>
+									</table></td>
+								</tr>
+							</table></td>
+						</tr>
+					</table></td>
+				</tr><tr id="F3922664_h0" class="header hover-row">
+					<td class="subject-line normal " width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr>
+							<td width="74px" class="indent"><a name="xx3922664xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="subject hover-container"><a class="message-link" name="3922664" parent="3920436" thread="3920121" href="/Messages/3922664/Re-Good-article-is-MEF-available-in-CF.aspx">Re: Good article ... is MEF available in CF</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="http://s.codeproject.com/script/Forums/Images/pin.png" border="0" align="top" alt="Pin" width="13px" height="13px" /></a></td><td class="icon"><img border="0" src="http://s.codeproject.com/App_Themes/CodeProject/Img/icn-member-16.gif" title="member" alt="member" height="16px" /></td><td class="author"><a href="/script/Membership/View.aspx?mid=898486">Adil Mughal</a></td><td class="date">10-Jun-11  19:25&nbsp;</td>
+						</tr>
+					</table></td>
+				</tr><tr id="F3922664_h1" class="content selected" style="display:none;">
+					<td class="normal" width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr valign="top">
+							<td class="indent align-right" style="width:74px;"><div class="voteform vertical" ownerid="898486" msgid="3922664" votingType="GoodOrBad">
+
+							</div><img src="http://s.codeproject.com/script/Forums/Images/t.gif" height="1px" width="74px" alt="" /></td><td class="text"><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+								<tr>
+									<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+										<tr>
+											<td colspan="2">MEF focuses on extensibility and it's not just for Dependency Injection. <br />
+&nbsp;<br />
+Consider this like when you have component wiring on run time in way that extends your application then you must use MEF instead of just IoC.<br />
+&nbsp;<br />
+Check out this <a href="http://channel9.msdn.com/Shows/SilverlightTV/Silverlight-TV-7-When-and-Where-to-use-MEF">video</a>[<a href="http://channel9.msdn.com/Shows/SilverlightTV/Silverlight-TV-7-When-and-Where-to-use-MEF" target="_blank" title="New Window">^</a>]<br />
+<div class="signature">Adil Mughal - MVP, MCTS<br />
+http://www.adilmughal.com</div><br /></td>
+										</tr>
+									</table></td>
+								</tr>
+							</table></td>
+						</tr>
+					</table></td>
+				</tr><tr id="F3922741_h0" class="header hover-row">
+					<td class="subject-line normal " width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr>
+							<td width="92px" class="indent"><a name="xx3922741xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="subject hover-container"><a class="message-link" name="3922741" parent="3922664" thread="3920121" href="/Messages/3922741/Re-Good-article-is-MEF-available-in-CF.aspx">Re: Good article ... is MEF available in CF</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="http://s.codeproject.com/script/Forums/Images/pin.png" border="0" align="top" alt="Pin" width="13px" height="13px" /></a></td><td class="icon"><img border="0" src="http://s.codeproject.com/App_Themes/CodeProject/Img/icn-MVP-16.gif" title="mvp" alt="mvp" height="16px" /></td><td class="author"><a href="/script/Membership/View.aspx?mid=1335831">Shivprasad <b>koirala</b></a></td><td class="date">10-Jun-11  23:31&nbsp;</td>
+						</tr>
+					</table></td>
+				</tr><tr id="F3922741_h1" class="content selected" style="display:none;">
+					<td class="normal" width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr valign="top">
+							<td class="indent align-right" style="width:92px;"><div class="voteform vertical" ownerid="1335831" msgid="3922741" votingType="GoodOrBad">
+
+							</div><img src="http://s.codeproject.com/script/Forums/Images/t.gif" height="1px" width="92px" alt="" /></td><td class="text"><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+								<tr>
+									<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+										<tr>
+											<td colspan="2">I agree. But it can still be used for DI by the import , export. I do understand the goals are different. The question was asked  in context of the article above , cant we use that rather than writing the whole thing of DI from scratch.<br />
+<div class="signature">My book .NET interview questions with 500 mostly asked questions in .NET world  <a href="http://www.questpond.com">.NET Interview questions and answers</a></div><br /></td>
+										</tr>
+									</table></td>
+								</tr>
+							</table></td>
+						</tr>
+					</table></td>
+				</tr><tr id="F3923777_h0" class="header hover-row">
+					<td class="subject-line normal " width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr>
+							<td width="110px" class="indent"><a name="xx3923777xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="subject hover-container"><a class="message-link" name="3923777" parent="3922741" thread="3920121" href="/Messages/3923777/Re-Good-article-is-MEF-available-in-CF.aspx">Re: Good article ... is MEF available in CF</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="http://s.codeproject.com/script/Forums/Images/pin.png" border="0" align="top" alt="Pin" width="13px" height="13px" /></a></td><td class="icon"><img border="0" src="http://s.codeproject.com/App_Themes/CodeProject/Img/icn-member-16.gif" title="member" alt="member" height="16px" /></td><td class="author"><a href="/script/Membership/View.aspx?mid=3836917">Erich Ledesma</a></td><td class="date">13-Jun-11  0:26&nbsp;</td>
+						</tr>
+					</table></td>
+				</tr><tr id="F3923777_h1" class="content selected" style="display:none;">
+					<td class="normal" width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr valign="top">
+							<td class="indent align-right" style="width:110px;"><div class="voteform vertical" ownerid="3836917" msgid="3923777" votingType="GoodOrBad">
+
+							</div><img src="http://s.codeproject.com/script/Forums/Images/t.gif" height="1px" width="110px" alt="" /></td><td class="text"><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+								<tr>
+									<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+										<tr>
+											<td colspan="2">Of course it would had been a choice, and a good one. Just I didn't find it at the time. I didn't got much time to spare then. And it really took me about that, 15 min (little longer actually), to create this very simple one. A google search and learning process would had taken longer than that.<br />
+&nbsp;<br />
+But I think I'll learn MEF, cause it offers many, many things I usually need.<br />
+&nbsp;<br />
+Thanx for your comments.<br /></td>
+										</tr>
+									</table></td>
+								</tr>
+							</table></td>
+						</tr>
+					</table></td>
+				</tr><tr id="F4649386_h0" class="header hover-row">
+					<td class="subject-line normal " width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr>
+							<td width="120px" class="indent"><a name="xx4649386xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="subject hover-container"><a class="message-link" name="4649386" parent="3923777" thread="3920121" href="/Messages/4649386/Re-Good-article-is-MEF-available-in-CF.aspx">Re: Good article ... is MEF available in CF</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="http://s.codeproject.com/script/Forums/Images/pin.png" border="0" align="top" alt="Pin" width="13px" height="13px" /></a></td><td class="icon"><img border="0" src="http://s.codeproject.com/App_Themes/CodeProject/Img/icn-member-16.gif" title="member" alt="member" height="16px" /></td><td class="author"><a href="/script/Membership/View.aspx?mid=1675252">Rafael Nicoletti</a></td><td class="date">30-Aug-13  13:16&nbsp;</td>
+						</tr>
+					</table></td>
+				</tr><tr id="F4649386_h1" class="content selected" style="display:none;">
+					<td class="normal" width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr valign="top">
+							<td class="indent align-right" style="width:120px;"><div class="voteform vertical" ownerid="1675252" msgid="4649386" votingType="GoodOrBad">
+
+							</div><img src="http://s.codeproject.com/script/Forums/Images/t.gif" height="1px" width="120px" alt="" /></td><td class="text"><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+								<tr>
+									<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+										<tr>
+											<td colspan="2">Let me talk my opinion.<br />As long I used MEF, I did not find any way to determine scopes and object lifetimes. <br />On the other way, the vast majority of IoC frameworks (Unity, Castle, Autofac and Ninject) have ways to define object scope lifetime. Maybe Im wrong.<br />Oh, and tahnks for the article. Very detailed.<br /></td>
+										</tr>
+									</table></td>
+								</tr>
+							</table></td>
+						</tr>
+					</table></td>
+				</tr><tr id="F3919872_h0" class="header hover-row root">
+					<td class="subject-line normal " width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr>
+							<td width="20px" class="indent"><a name="xx3919872xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="subject hover-container"><a class="message-link" name="3919872" parent="0" thread="3919872" href="/Messages/3919872/Interesting.aspx">Interesting</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="http://s.codeproject.com/script/Forums/Images/pin.png" border="0" align="top" alt="Pin" width="13px" height="13px" /></a></td><td class="icon"><img border="0" src="http://s.codeproject.com/App_Themes/CodeProject/Img/icn-member-16.gif" title="member" alt="member" height="16px" /></td><td class="author"><a href="/script/Membership/View.aspx?mid=3062467">CIDev</a></td><td class="date">8-Jun-11  8:52&nbsp;</td>
+						</tr>
+					</table></td>
+				</tr><tr id="F3919872_h1" class="content root selected" style="display:none;">
+					<td class="normal" width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr valign="top">
+							<td class="indent align-right" style="width:20px;"><div class="voteform vertical" ownerid="3062467" msgid="3919872" votingType="GoodOrBad">
+
+							</div><img src="http://s.codeproject.com/script/Forums/Images/t.gif" height="1px" width="20px" alt="" /></td><td class="text"><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+								<tr>
+									<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+										<tr>
+											<td colspan="2">An interesting and clearly written article.<br />
+<div class="signature">Just because the code works, it doesn't mean that it is good code.</div><br /></td>
+										</tr>
+									</table></td>
+								</tr>
+							</table></td>
+						</tr>
+					</table></td>
+				</tr><tr id="F3919588_h0" class="header hover-row root">
+					<td class="subject-line normal " width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr>
+							<td width="20px" class="indent"><a name="xx3919588xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="subject hover-container"><a class="message-link" name="3919588" parent="0" thread="3919588" href="/Messages/3919588/Nice-Work.aspx">Nice Work</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="http://s.codeproject.com/script/Forums/Images/pin.png" border="0" align="top" alt="Pin" width="13px" height="13px" /></a></td><td class="icon"><img border="0" src="http://s.codeproject.com/App_Themes/CodeProject/Img/icn-member-16.gif" title="member" alt="member" height="16px" /></td><td class="author"><a href="/script/Membership/View.aspx?mid=4664921">Jammer</a></td><td class="date">8-Jun-11  4:44&nbsp;</td>
+						</tr>
+					</table></td>
+				</tr><tr id="F3919588_h1" class="content root selected" style="display:none;">
+					<td class="normal" width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr valign="top">
+							<td class="indent align-right" style="width:20px;"><div class="voteform vertical" ownerid="4664921" msgid="3919588" votingType="GoodOrBad">
+
+							</div><img src="http://s.codeproject.com/script/Forums/Images/t.gif" height="1px" width="20px" alt="" /></td><td class="text"><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+								<tr>
+									<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+										<tr>
+											<td colspan="2">I too love IoC and this is a really nice neat example.  Have a 5!<br />
+<div class="signature">Jammer<br />
+<a href="http://jammer.biz/blog2/">My Blog</a> | <a href="http://www.codeproject.com/script/Articles/MemberArticles.aspx?amid=4664921">Articles</a> | <a href="http://www.jammer.biz/Projects/dmon.php">DMon</a> | <a href="http://www.jamsoft.co.uk/samplesort.php">SampleSort</a></div><br /></td>
+										</tr>
+									</table></td>
+								</tr>
+							</table></td>
+						</tr>
+					</table></td>
+				</tr><tr id="F3919602_h0" class="header hover-row">
+					<td class="subject-line normal " width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr>
+							<td width="38px" class="indent"><a name="xx3919602xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="subject hover-container"><a class="message-link" name="3919602" parent="3919588" thread="3919588" href="/Messages/3919602/Re-Nice-Work.aspx">Re: Nice Work</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="http://s.codeproject.com/script/Forums/Images/pin.png" border="0" align="top" alt="Pin" width="13px" height="13px" /></a></td><td class="icon"><img border="0" src="http://s.codeproject.com/App_Themes/CodeProject/Img/icn-member-16.gif" title="member" alt="member" height="16px" /></td><td class="author"><a href="/script/Membership/View.aspx?mid=3836917">Erich Ledesma</a></td><td class="date">8-Jun-11  4:55&nbsp;</td>
+						</tr>
+					</table></td>
+				</tr><tr id="F3919602_h1" class="content selected" style="display:none;">
+					<td class="normal" width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr valign="top">
+							<td class="indent align-right" style="width:38px;"><div class="voteform vertical" ownerid="3836917" msgid="3919602" votingType="GoodOrBad">
+
+							</div><img src="http://s.codeproject.com/script/Forums/Images/t.gif" height="1px" width="38px" alt="" /></td><td class="text"><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+								<tr>
+									<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+										<tr>
+											<td colspan="2">Thank you!!! I'm very glad you'd like it<br /></td>
+										</tr>
+									</table></td>
+								</tr>
+							</table></td>
+						</tr>
+					</table></td>
+				</tr><tr id="F3917946_h0" class="header hover-row root">
+					<td class="subject-line normal " width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr>
+							<td width="20px" class="indent"><a name="xx3917946xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="subject hover-container"><a class="message-link" name="3917946" parent="0" thread="3917946" href="/Messages/3917946/Loving-it.aspx">Loving it</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="http://s.codeproject.com/script/Forums/Images/pin.png" border="0" align="top" alt="Pin" width="13px" height="13px" /></a></td><td class="icon"><img border="0" src="http://s.codeproject.com/App_Themes/CodeProject/Img/icn-member-16.gif" title="member" alt="member" height="16px" /></td><td class="author"><a href="/script/Membership/View.aspx?mid=2952619">Mel Padden</a></td><td class="date">7-Jun-11  1:48&nbsp;</td>
+						</tr>
+					</table></td>
+				</tr><tr id="F3917946_h1" class="content root selected" style="display:none;">
+					<td class="normal" width="100%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr valign="top">
+							<td class="indent align-right" style="width:20px;"><div class="voteform vertical" ownerid="2952619" msgid="3917946" votingType="GoodOrBad">
+
+							</div><img src="http://s.codeproject.com/script/Forums/Images/t.gif" height="1px" width="20px" alt="" /></td><td class="text"><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+								<tr>
+									<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+										<tr>
+											<td colspan="2">I'm a big fan of this kind of thing; people who understand the reasoning behind the use of a particular pattern or framework, go off and create a lightweight implementation of only the parts that they need, and use that. I've done this kind of thing a few times myself. Makes development a pleasure.<br />
+<div class="signature"><i>Smokie, this is not 'Nam. This is bowling. There are rules.</i><br />
+<a href="http://www.geticeberg.com" target="_blank">www.geticeberg.com</a><br />
+&nbsp;<br />
+<a href="http://melpadden.wordpress.com" target="_blank">http://melpadden.wordpress.com</a><br />
+</div><br /></td>
+										</tr>
+									</table></td>
+								</tr>
+							</table></td>
+						</tr>
+					</table></td>
+				</tr><tr>
+					<td><img src="http://s.codeproject.com/script/Forums/Images/t.gif" border="0" width="1px" height="5px" alt="" /></td>
+				</tr>
+			</table></td>
+		</tr><tr>
+			<td><table width="100%" cellpadding="2px" cellspacing="0">
+				<tr class="footer">
+					<td>Last Visit: 31-Dec-99  18:00 &nbsp; &nbsp; Last Update: 3-Jul-14  17:12</td><td><a href="/Articles/206125/An-IoC-Container-in-min?fid=1631154&amp;df=90&amp;mpp=25&amp;noise=3&amp;prof=False&amp;sort=Position&amp;view=Normal&amp;spc=Relaxed">Refresh</a></td><td style="text-align:right;white-space:nowrap;"><input id="_mbnUrl" type="hidden" value="/Articles/206125/An-IoC-Container-in-min?fid=1631154&amp;df=90&amp;mpp=25&amp;noise=3&amp;prof=False&amp;sort=Position&amp;view=Normal&amp;spc=Relaxed&amp;fr=26" /><span class="nav-link selected">1</span><a class="nav-link" name="Frm_HoverNL" href="/Articles/206125/An-IoC-Container-in-min?fid=1631154&amp;df=90&amp;mpp=25&amp;noise=3&amp;prof=False&amp;sort=Position&amp;view=Normal&amp;spc=Relaxed&amp;fr=26#xx0xx">2</a> <a class="nav-link" name="Frm_HoverNL" href="/Articles/206125/An-IoC-Container-in-min?fid=1631154&amp;df=90&amp;mpp=25&amp;noise=3&amp;prof=False&amp;sort=Position&amp;view=Normal&amp;spc=Relaxed&amp;fr=26#xx0xx">Next »</a></td>
+				</tr>
+			</table></td>
+		</tr>
+	</table><p class="small-text"><img align="top" src="/script/Forums/Images/msg_general.gif" width="16px" height="16px" alt="General" /> General &nbsp;&nbsp; <img align="top" src="/script/Forums/Images/msg_news.gif" width="16px" height="16px" alt="News" /> News &nbsp;&nbsp; <img align="top" src="/script/Forums/Images/msg_idea.gif" width="16px" height="16px" alt="Suggestion" /> Suggestion &nbsp;&nbsp; <img align="top" src="/script/Forums/Images/msg_question.gif" width="16px" height="16px" alt="Question" /> Question &nbsp;&nbsp; <img align="top" src="/script/Forums/Images/msg_bug.gif" width="16px" height="16px" alt="Bug" /> Bug &nbsp;&nbsp; <img align="top" src="/script/Forums/Images/msg_answer.gif" width="16px" height="16px" alt="Answer" /> Answer &nbsp;&nbsp; <img align="top" src="/script/Forums/Images/msg_joke.gif" width="16px" height="16px" alt="Joke" /> Joke &nbsp;&nbsp; <img align="top" src="/script/Forums/Images/msg_rant.gif" width="16px" height="16px" alt="Rant" /> Rant &nbsp;&nbsp; <img align="top" src="/script/Forums/Images/msg_admin.gif" width="16px" height="16px" alt="Admin" /> Admin &nbsp;&nbsp; </p><p class="small-text">Use Ctrl+Left/Right to switch messages, Ctrl+Up/Down to switch threads, Ctrl+Shift+Left/Right to switch pages.</p>
+				
+
+			</div>
+			
+		</td>
+		<td>
+			<div id="ctl00_RightSideBar" class="container-article-info">
+
+				<div class="header">About Article</div>
+				<div class="article-summary">
+
+					
+					
+
+					
+					
+
+					<a id="ctl00_InfoBox_ParentLink"></a>
+
+<table cellpadding="0" cellspacing="0" class="article-info">
+
+	
+	<tr><td>Type&nbsp;</td><td class="value"><a id="ctl00_InfoBox_TypeName" href="/script/Articles/Types.aspx?#Article">Article</a></td></tr>
+	
+
+	<tr><td>Licence&nbsp;</td><td class="value"><a href="http://www.codeproject.com/info/cpol10.aspx" title="The Code Project Open License (CPOL)">CPOL</a></td></tr>
+
+	
+
+	<tr><td>First Posted&nbsp;</td><td nowrap="nowrap" class="value"><span itemprop="datePublished" content="2011-06-03">3 Jun 2011</span></td></tr>
+
+	<tr><td>Views&nbsp;</td><td class="value">37,340</td></tr>
+
+	
+	<tr><td>Downloads&nbsp;</td><td  class="value">628</td></tr>
+		
+
+	
+	<tr><td>Bookmarked&nbsp;</td><td class="value">96 times</td></tr>
+	
+
+	
+
+	
+	
+	
+	<tr><td colspan="2"></td>
+	</tr>
+	
+	
+</table>
+
+					<div class="tags"> 
+					<span id="ctl00_TagsList_TagWrp" class="tags">
+	
+	
+	
+	<span id="ctl00_TagsList_VisibleTags"><span class="t"><a rel="tag" href="/Tags/C--hash--">C#</a></span> <span class="t"><a rel="tag" href="/Tags/Architect">Architect</a></span> <span class="t"><a rel="tag" href="/Tags/Dev">Dev</a></span> <span class="t"><a rel="tag" href="/Tags/Beginner">Beginner</a></span> </span> 
+
+	
+	
+</span>
+
+					</div>
+
+					
+				</div>
+
+				<div style="width:160px;margin: 10px auto;">
+					<div class="msg-160x600" data-format="160x600" data-type="ad" data-publisher="lqm.codeproject.site" data-zone="ros"  data-tags='C#, Architect, Dev, Beginner,rating4.5'></div>
+				</div>
+
+				
+
+				
+
+                
+				<div class="padded-top">
+					
+	<div id="ctl00_RelatedArticles_RelatedResults_ctl00_header" class="header">Related Articles</div>
+	<div class="content-list">	
+	
+	<div class="content-list-item">
+		<a id="ctl00_RelatedArticles_RelatedResults_ctl02_Link" class="title" href="/Articles/176230/Using-Munq-IOC-Container-Version-in-ASP-NET-MVC">Using Munq IOC Container Version 3 in ASP.NET MVC 3</a>
+		
+	</div>
+	
+	<div class="content-list-item">
+		<a id="ctl00_RelatedArticles_RelatedResults_ctl03_Link" class="title" href="/Articles/538536/A-curry-of-Dependency-Inversion-Principle-DIP-Inve">A curry of Dependency Inversion Principle (DIP), Inversion of Control (IoC), Dependency Injection (DI) and IoC Container</a>
+		
+	</div>
+	
+	<div class="content-list-item">
+		<a id="ctl00_RelatedArticles_RelatedResults_ctl04_Link" class="title" href="/Articles/29271/Design-pattern-Inversion-of-control-and-Dependency">Design pattern – Inversion of control and Dependency injection</a>
+		
+	</div>
+	
+	<div class="content-list-item">
+		<a id="ctl00_RelatedArticles_RelatedResults_ctl05_Link" class="title" href="/Articles/542752/Dependency-Inversion-Principle-IoC-Container-Depen">Dependency Inversion Principle, IoC Container & Dependency Injection (Part - 2)</a>
+		
+	</div>
+	
+	<div class="content-list-item">
+		<a id="ctl00_RelatedArticles_RelatedResults_ctl06_Link" class="title" href="/Articles/568157/Dependency-Inversion-Principle-IoC-Container-and">Dependency Inversion Principle, IoC Container, and Dependency Injection (Part - 3)</a>
+		
+	</div>
+	
+	<div class="content-list-item">
+		<a id="ctl00_RelatedArticles_RelatedResults_ctl07_Link" class="title" href="/Articles/21318/Introducing-the-LinFu-Framework-Part-IV-Simple-IOC">Introducing the LinFu Framework, Part IV: Simple.IOC – The Five Minute Inversion of Control Container</a>
+		
+	</div>
+	
+	<div class="content-list-item">
+		<a id="ctl00_RelatedArticles_RelatedResults_ctl08_Link" class="title" href="/Articles/552514/BarbarianIOC-A-simple-IOC-Container">BarbarianIOC : A simple IOC Container</a>
+		
+	</div>
+	
+	<div class="content-list-item">
+		<a id="ctl00_RelatedArticles_RelatedResults_ctl09_Link" class="title" href="/Articles/182942/The-Inversion-of-Control-Pattern">The Inversion of Control Pattern</a>
+		
+	</div>
+	
+	<div class="content-list-item">
+		<a id="ctl00_RelatedArticles_RelatedResults_ctl10_Link" class="title" href="/Articles/279295/How-to-use-the-IOC-Container-and-MVVM-with-Phone">How to use the IOC Container and MVVM with Phone7.Fx</a>
+		
+	</div>
+	
+	<div class="content-list-item">
+		<a id="ctl00_RelatedArticles_RelatedResults_ctl11_Link" class="title" href="/Articles/692888/Expandable-IoC-Container">Expandable IoC Container</a>
+		
+	</div>
+	
+	<div class="content-list-item">
+		<a id="ctl00_RelatedArticles_RelatedResults_ctl12_Link" class="title" href="/Articles/206507/Duplicates-detector-via-audio-fingerprinting">Duplicate songs detector via audio fingerprinting</a>
+		
+	</div>
+	
+	<div class="content-list-item">
+		<a id="ctl00_RelatedArticles_RelatedResults_ctl13_Link" class="title" href="/Articles/17188/Inversion-of-Control-IoC-in-XAML">Inversion of Control (IoC) in XAML</a>
+		
+	</div>
+	
+	<div class="content-list-item">
+		<a id="ctl00_RelatedArticles_RelatedResults_ctl14_Link" class="title" href="/Articles/297624/Implementing-MVVM-Light-with-Structure-Map">Implementing MVVM Light with Structure Map</a>
+		
+	</div>
+	
+	<div class="content-list-item">
+		<a id="ctl00_RelatedArticles_RelatedResults_ctl15_Link" class="title" href="/Articles/745313/Trusted-Variables">Trusted Variables</a>
+		
+	</div>
+	
+	<div class="content-list-item">
+		<a id="ctl00_RelatedArticles_RelatedResults_ctl16_Link" class="title" href="/Articles/361695/Build-a-Pluggable-Application-with-IoC-Container">Build a Pluggable Application with IoC Container</a>
+		
+	</div>
+	
+	<div class="content-list-item">
+		<a id="ctl00_RelatedArticles_RelatedResults_ctl17_Link" class="title" href="/Articles/106328/NET-MEF-FAQ-Socket-Plug-and-extension">.NET 4.0 MEF FAQ (Socket, Plug and extension)</a>
+		
+	</div>
+	
+	<div class="content-list-item">
+		<a id="ctl00_RelatedArticles_RelatedResults_ctl18_Link" class="title" href="/Articles/465173/Dependency-Inversion-Principle-IoC-Container-and-D">Dependency Inversion Principle, IoC Container, and Dependency Injection (Part - 1)</a>
+		
+	</div>
+	
+	<div class="content-list-item">
+		<a id="ctl00_RelatedArticles_RelatedResults_ctl19_Link" class="title" href="/Articles/519402/A-simple-WPF-Text-Clock-Gadget-for-Windows">A simple WPF Text Clock Gadget for Windows</a>
+		
+	</div>
+	
+	<div class="content-list-item">
+		<a id="ctl00_RelatedArticles_RelatedResults_ctl20_Link" class="title" href="/Articles/774968/Antler-Abstraction-over-ORM-that-you-like-to-use-i">Antler: Abstraction over ORM that you like to use in .NET</a>
+		
+	</div>
+	
+	<div class="content-list-item">
+		<a id="ctl00_RelatedArticles_RelatedResults_ctl21_Link" class="title" href="/Articles/652236/IoC-and-DI-Tips">IoC and DI Tips</a>
+		
+	</div>
+	
+	</div>
+	
+
+				</div>
+				<div class="padded-top">
+					
+	<div id="ctl00_RelatedLibrary_RelatedResults_ctl00_header" class="header">Related Research</div>
+	<div class="content-list align-center">	
+	
+	<div class="content-list-item">
+		<div><img id="ctl00_RelatedLibrary_RelatedResults_ctl01_Thumb" class="shadow" src="/script/ResearchLibrary/Logos/LibraryItemThumbnail_56_100x130.gif" style="border-width:0px;" /></div>
+		<a id="ctl00_RelatedLibrary_RelatedResults_ctl01_Link" class="title" href="/ResearchLibrary/56/Enterprise-Imaging-on-the-Web-A-How-To-Guide-for-D">Enterprise Imaging on the Web: A How To Guide for Developers</a>
+		
+	</div>
+	
+	<div class="content-list-item">
+		<div><img id="ctl00_RelatedLibrary_RelatedResults_ctl02_Thumb" class="shadow" src="/script/ResearchLibrary/Logos/LibraryItemThumbnail_46_100x129.png" style="border-width:0px;" /></div>
+		<a id="ctl00_RelatedLibrary_RelatedResults_ctl02_Link" class="title" href="/ResearchLibrary/46/Essential-Keys-to-Mobile-Usability">Essential Keys to Mobile Usability</a>
+		
+	</div>
+	
+	<div class="content-list-item">
+		<div><img id="ctl00_RelatedLibrary_RelatedResults_ctl03_Thumb" class="shadow" src="/script/ResearchLibrary/Logos/LibraryItemThumbnail_48_100x130.jpg" style="border-width:0px;" /></div>
+		<a id="ctl00_RelatedLibrary_RelatedResults_ctl03_Link" class="title" href="/ResearchLibrary/48/How-to-Do-a-Big-Data-Project">How to Do a Big Data Project</a>
+		
+	</div>
+	
+	<div class="content-list-item">
+		<div><img id="ctl00_RelatedLibrary_RelatedResults_ctl04_Thumb" class="shadow" src="/script/ResearchLibrary/Logos/LibraryItemThumbnail_45_100x124.png" style="border-width:0px;" /></div>
+		<a id="ctl00_RelatedLibrary_RelatedResults_ctl04_Link" class="title" href="/ResearchLibrary/45/Ten-Tips-of-Web-App-Testing">Ten Tips of Web App Testing</a>
+		
+	</div>
+	
+	</div>
+	
+
+				</div>
+
+				
+				
+			</div>
+		</td>
+		</tr></table>
+
+		
+		<div class="theme1-background" style="height:2px"></div>
+
+		<div class="extended tiny-text">
+			<div class="row">
+				<div class="float-left">
+					<a id="ctl00_PermaLink" itemprop="url" href="/Articles/206125/An-IoC-Container-in-min">Permalink</a> | 
+					<a id="ctl00_AdvertiseLink" href="http://developermedia.com/">Advertise </a> |
+					<a id="ctl00_PrivacyLink" href="/info/privacy.aspx">Privacy</a> |
+					<a id="ctl00_Mobile" rel="nofollow" href="/Articles/206125/An-IoC-Container-in-min?display=Mobile">Mobile</a>
+					<br />
+								
+					
+					Web03 |
+					2.8.140630.1 |
+					Last Updated 3 Jun 2011								
+				</div>
+				<div class="float-right align-right">
+					Article Copyright 2011 by Erich Ledesma<br />Everything else
+					Copyright &copy; <a href="mailto:webmaster@codeproject.com">CodeProject</a>, 1999-2014 <br />
+					<a id="ctl00_TermsOfUseLink" href="/info/TermsOfUse.aspx">Terms of Service</a>
+				</div>
+
+				
+
+
+<div class="page-width">
+Layout: <a id="ctl00_PageWidth_FixedT" title="Fixed width layout" rel="nofollow" class=" active" href="/Articles/206125/An-IoC-Container-in-min?PageFlow=FixedWidth">fixed</a>
+|
+<a id="ctl00_PageWidth_FluidT" title="Fluid layout" rel="nofollow" href="/Articles/206125/An-IoC-Container-in-min?PageFlow=Fluid">fluid</a>
+</div>
+
+
+
+			</div>
+		</div>
+		
+
+		<br clear="all" />
+		
+			
+
+	</div> 
+	</div>
+</div>
+
+
+<div style="display:none;" id="dm_AdTable">
+	
+</div>
+
+
+
+
+
+
+<script type="text/javascript" language="Javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script><script type='text/javascript'>//<![CDATA[
+if (typeof jQuery == 'undefined') {
+    document.write(unescape("%3Cscript src='/script/JS/jquery-1.6.2.min.js' type='text/javascript' %3E%3C/script%3E"));
+}//]]></script>
+<script type="text/javascript" language="Javascript" src="http://s.codeproject.com/script/Articles/JS/article.min.js?dt=2.8.140630.1"></script>
+<script type="text/javascript" language="Javascript" src="http://s.codeproject.com/script/JS/navbar.min.js?dt=2.8.140630.1"></script>
+<script type="text/javascript" language="Javascript" src="http://s.codeproject.com/script/Membership/JS/Notifications.min.js?dt=2.8.140630.1"></script>
+<script type="text/javascript" language="Javascript">//<![CDATA[
+$(document).ready(function() { anchorAnimate(); });
+var DMReportsOK = null;function showDMAlert() {   var $div = $('div.msg-728x90');  $div.append($('<img src="/images/alert-top-block.gif" style="right:0;position:absolute;z-index:0">'));}function onDMcallBack(event){   if (event.originalEvent) event = event.originalEvent;   jQuery.support.cors = true;   if (event.data === 'DM:Disabled') DMReportsOK = false;   else if (event.data === 'DM:Enabled' || event.data=='DM-enabled') DMReportsOK = true;   else if (typeof event.data == 'object' && event.data.sender &&             event.data.sender == 'DeveloperMedia' && event.data.application=='apps' &&            event.data.action == 'reportEnabled') {            DMReportsOK = event.data.data.eanbled;   }}function checkLoaded() {  var recordCheck  = false; var showBlockMsg = false; var block        = 'None'; if (!DMReportsOK && block == 'None' && typeof DMAds === 'undefined')     block = 'ResourceBlocked'; if (DMReportsOK === true) block = 'None'; else if (DMReportsOK === false) block = 'DomModified'; if (recordCheck) {  $.ajax({ url:'/script/AdServe/Ajax/VS.aspx',data:{'adbm':block}, cache:false, async:true }); } if (showBlockMsg && block != 'None')    showDMAlert();}$(document).ready(function() {  $(window).bind('message', onDMcallBack);  setTimeout(checkLoaded, 4000);});
+$(function ()
+                {
+                    $('.oauth').click(function () {
+                        $this = $(this);
+                        href = $this.attr('href');
+                        var myWindow = window.open(href, 'popup',
+                                    'width=800,height=600,location=0,menubar=0,resizeable=0,scrollbars=0,toolbar=0');
+                        myWindow.focus();
+                        var timer = setInterval(function () {
+                                        if (myWindow.closed) {
+                                            clearInterval(timer);
+                                            // window.location.reload(); // May do a POST reload, shows a warning
+                                            window.location = window.location; // force a GET reload
+                                        }
+                                    }, 200);
+                        return false;
+                    });
+                });
+var oSrchFlt = false, oSrchBox=false,srchBoxFoc=false;
+$(document).ready(function() {
+ if(InitWatermark)InitWatermark('sb_tb', 'Search for articles, questions, tips');
+ var sbar = $('#sb_tb'); 
+ var sfilter = $('#SearchFilter');
+ if (sbar && sfilter) {
+  sfilter.removeClass('popup'); sfilter.hide();
+  sbar.blur(function() {
+ if (!oSrchFlt)sfilter.hide();
+ srchBoxFoc=false;
+ /*sbar.animate( { width:'210px' }, { queue:false, duration:300 });
+*/ });
+  sbar.focus(function() {
+ oSrchFlt=false;srchBoxFoc=true;
+ sfilter.show();
+ /*sbar.animate( { width:'500px' }, { queue:false, duration:300 });
+*/ });
+  sbar.mouseleave(function() { oSrchBox=false; });
+  sbar.mouseover(function() { oSrchBox=true; });
+  sfilter.mouseleave(function() { oSrchFlt=false; if (!srchBoxFoc&&!oSrchBox)sfilter.hide();});
+  sfilter.mouseover(function() { oSrchFlt=true; });
+ }
+});
+$('#clear-rate_ctl00_RateArticle_RSU').click(function () {    $('#ctl00_RateArticle_RSU').hide(); return false;});$("#ctl00_RateArticle_RateItemWrapper")   .removeClass("container-rating")   .hover( function() { $('#ctl00_RateArticle_RSU').fadeIn('fast'); },            function() { $('#ctl00_RateArticle_RSU').fadeOut('fast'); } );
+function PostBack_ctl00_RateArticle_RateItemWrapper() {
+  return rateItem(206125,2,1,true,true,3,'LargeStars');
+}
+
+                        function getVotesHistogram(objectId, objectTypeId, containerId, loadingId) {
+                            if (!$('#' + containerId).attr('alreadyRequested')){
+                                $.ajax({
+                                    url: '/script/Ratings/Ajax/Histogram.aspx?obid=' + objectId + '&obtid='+objectTypeId,
+                                    success: function (data) {
+                                        $('#' + containerId).html(data);
+                                        $('#' + loadingId).hide();
+                                    }
+                                });
+                                $('#' + containerId).attr('alreadyRequested', 'true');
+                            }
+                        }
+$(document).ready(function() {   new starRating('#ctl00_RateArticle_VoteFormDiv', PostBack_ctl00_RateArticle_RateItemWrapper,'ctl00_RateArticle');
+  $('#ctl00_RateArticle_RB').mouseenter(function() {     getVotesHistogram(206125,2   ,'ctl00_RateArticle_Histogram','ctl00_RateArticle_Loading');  })})
+$(document).ready(function() { $('#ctl00_RateArticle_SubmitRateBtn').hide(); });
+$(document).ready(function() { $('#ctl00_RateArticle_SubmitRateBtn').hide(); });function ChkRtctl00_RateArticle(){}
+
+forumDir = '/script/Forums/';
+staticServer = 'http://s.codeproject.com';
+allowReporting = false;
+allowRating = false;
+allowRatingDisplay = true;
+var smoothScroll = true;
+Selected        = -1;
+oldTitle        = document.title;
+minMessageScore = 1;
+minMessageScore = 5;
+abuseScore      = -2;
+spamScore       = -1;
+getRatingUrl    = '/script/Ratings/Ajax/GetRatings.aspx';
+noiseThreshold  = 3;
+getRatingRefKey = 'obrs';
+
+
+//]]>
+</script>
+
+
+</body>
+</html>

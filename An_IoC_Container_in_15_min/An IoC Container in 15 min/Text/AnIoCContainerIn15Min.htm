@@ -1,0 +1,501 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!-- saved from url=(0067)http://www.codeproject.com/script/Articles/ViewHtml.aspx?aid=206125 -->
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Article Source</title>
+	<link rel="stylesheet" type="text/css" href="./Article Source2_files/CodeProject.css">
+	<!--<base href="http://www.codeproject.com/KB/tips/">-->
+	<base href=".">
+	<style type="text/css">
+		var
+		{
+			color: rgb(153, 0, 0);
+			font: normal normal normal 11pt/normal 'Courier New' , Courier, mono;
+		}
+	</style>
+</head>
+<body>
+	<!--
+HTML for article "An IoC Container in 15 min" by Erich Ledesma
+URL: http://www.codeproject.com/KB/tips/IoCin15Min.aspx
+Copyright 2011 by Erich Ledesma
+All formatting, additions and alterations Copyright © CodeProject, 1999-2011
+-->
+	<p>
+		<b>Please choose 'View Source' in your browser to view the HTML, or File | Save to
+			save this file to your hard drive for editing.</b></p>
+	<hr class="Divider subdue">
+	<div>
+		<!-- Start Article -->
+		<span id="ArticleContent">
+			<ul class="download">
+				<li><a href="http://www.codeproject.com/KB/tips/IoCin15Min/An_IoC_Container_in_15_min.zip">
+					Download source - 120.54 KB</a> </li>
+			</ul>
+			<h2>
+				Introduction
+			</h2>
+			<p>
+				Last week, I was programming a Compact Framework application. I'm so used to IoC
+				right now that I hardly see myself programming in another way. The problem is that
+				<a href="http://www.castleproject.org/container/">Windsor</a> (my favorite) container
+				doesn't work on CF. So I looked at my options. It turned out there weren't many.
+				Actually I found some. One of them: <a href="http://ninject.org/">Ninject</a>, although
+				very promising implied some study, because it ain't a container, and I didn't get
+				the time then. There were another couple that worked pretty similar to Windsor,
+				but they had problems resolving generic components. So I thought: I want my own!!!
+			</p>
+			<h2>
+				Changes</h2>
+			<ol>
+				<li>18-Jun-2011: The <var>IService</var> interface wasn&#39;t that useful, if at all. So, every use of
+					it has been replaced with <var>object</var>. For the reader 
+					who sees this article for the first time: never mind.
+				</li>
+				<li>18-Jun-2011: Generics registration improved, there were some cases causing 
+					problems, they are not anymore.</li>
+			</ol>
+			<h2>
+				Building an IoC from Scratch</h2>
+			<p>
+				Let's start with the interfaces:</p>
+			<pre lang="cs">public interface IServicesContainer 
+{ 
+	TService Resolve&lt;TService&gt;() where TService : IService; 
+	object Resolve(Type tService); 
+}
+
+public interface IServicesRegistrar : IServicesContainer
+{
+	void RegisterForAll(params Type[] tServices);
+	void RegisterForAll(IEnumerable&lt;Type&gt; tServices);
+
+	void RegisterFor(Type tService, params Type[] tInterfaces);
+	void RegisterFor(Type tService, params IEnumerable&lt;Type&gt; tInterfaces);
+}</pre>
+			<div class="Caption">
+				Code Excerpt 1: IoC interfaces</div>
+			<p>
+								Everything we might need is there. The actual
+				container <code>IServicesContainer</code>, and a registrar <code>IServicesRegistrar</code>.
+				A container should implement both <code>IServicesContainer </code>and <code>IServicesRegistrar</code>,
+				but the registrar is only needed when registering so later on we could use only
+				the container itself.</p>
+			<p>
+				We will need a helper type for storing information about types and instances:</p>
+			<pre lang="cs">internal class ServiceDescriptor 
+{ 
+	public Type ServiceType { get; set; } 
+	public object Instance { get; set; } 
+}</pre>
+			<div class="Caption">
+				Code Excerpt 2: ServiceDescriptor</div>
+			<p>
+				Let's start with the container:</p>
+			<pre lang="cs">internal class ServicesContainer : IServicesRegistrar 
+{ 
+	private readonly IDictionary&lt;Type, ServiceDescriptor&gt; _services = 
+		new Dictionary&lt;Type, ServiceDescriptor&gt;(); 
+	
+	public TService Resolve&lt;TService&gt;() 
+	{ 
+		return (TService)Resolve(typeof(TService)); 
+	}  
+	
+	public object Resolve(Type tService) 
+	{ 
+		return GetInstance(tService);
+	}
+	...
+}</pre>
+			<div class="Caption">
+				Code Excerpt 3: The Container, Most Of It</div>
+			<p>
+				A dictionary would hold the mappings. <code>GetInstance </code>would find the 
+				existing instance or create a new one. Let's continue with <code>GetInstance</code>:</p>
+			<pre lang="cs">internal class ServicesContainer : IServicesRegistrar 
+{
+	...
+	private object GetInstance(Type tService)
+	{
+		if (_services.ContainsKey(tService)) 
+			return GetInstance(_services[tService]); 
+
+		var genericDefinition = tService.GetGenericTypeDefinition(); 
+		if (_services.ContainsKey(genericDefinition)) 
+			return GetGenericInstance(tService, 
+				_services[genericDefinition].ServiceType); 
+
+		throw new Exception("Type not registered" + tService);
+	}
+
+	...
+}</pre>
+			<div class="Caption">
+				Code Excerpt 4: GetInstance</div>
+			<p>
+				There are three cases:
+			</p>
+			<ol>
+				<li>The type is known, if so, we ask for <code>GetInstance </code>but this 
+					time with
+					the <code>ServiceDescriptor </code>as parameter, this overload will be next. </li>
+				<li>The type is unknown, but maybe it is a generic type, and its generic type definition
+					is known, if so, we ask <code>GetGenericInstance </code>to solve the problem.
+				</li>
+				<li>The type is unknown, you've seen this movie so there is no need to tell you what
+					happens next. </li>
+			</ol>
+			<pre lang="cs">internal class ServicesContainer : IServicesRegistrar 
+{
+	...
+	private object GetInstance(ServiceDescriptor serviceDescriptor) 
+	{ 
+		return serviceDescriptor.Instance ?? ( serviceDescriptor.Instance = 
+			CreateInstance(serviceDescriptor.ServiceType)); 
+	}
+}</pre>
+			<div class="Caption">
+				Code Excerpt 5: GetInstance II</div>
+			<p>
+				Not much here, just resolved an interface to a concrete class, then asked <code>CreateInstance
+				</code>to instantiate that class. The really interesting stuff happens in <code>CreateInstance</code>,
+				that's why it will have to wait. Let's look at <code>GetGenericInstance </code>first:</p>
+			<pre lang="cs">internal class ServicesContainer : IServicesRegistar
+{
+	...
+	private object GetGenericInstance(Type tService, Type genericDefinition) 
+	{ 
+		var genericArguments = tService.GetGenericArguments(); 
+		var actualType = genericDefinition.MakeGenericType(genericArguments); 
+		var result = CreateInstance(actualType); 
+
+		_services[tService] = new ServiceDescriptor 
+		{ 
+			ServiceType = actualType, 
+			Instance = result 
+		}; 
+
+		return result; 
+	}
+}</pre>
+			<div class="Caption">
+				Code Excerpt 6: GetGenericInstance</div>
+			<p>
+				There generic arguments are taken from actual requested type <code>tService </code>
+				and a new generic type is created from the registered type and these arguments.
+				Then we request <code>CreateInstance </code>to help us out. Think it's time:</p>
+			<pre lang="cs">internal class ServicesContainer : IServicesRegistrar
+{
+	...
+	private object CreateInstance(Type serviceType) 
+	{ 
+		var ctor = serviceType.GetConstructors().First(); 
+		var dependecies = ctor.GetParameters()
+			.Select(p =&gt; Resolve(p.ParameterType)).ToArray(); 
+
+		return (IService)ctor.Invoke(dependecies); 
+	}
+}</pre>
+			<div class="Caption">
+				Code Excerpt 7: CreateInstance</div>
+			<p>
+				First we get a constructor, there should be only one. Then we get the constructor
+				parameter types (dependencies) and resolve them. Finally, we create and return the
+				instance. That's it, we just need to register types and our IoC container would
+				be ready.</p>
+			<pre lang="cs">internal class ServicesContainer : IServicesRegistrar
+{
+	...
+	public ITypeRegistrar RegisterForAll(params Type[] implementations) 
+	{ 
+		return Register((IEnumerable&lt;Type&gt;)implementations); 
+	} 
+
+	public ITypeRegistrar RegisterForAll(IEnumerable&lt;Type&gt; implementations) 
+	{ 
+		foreach (var impl in implementations) 
+			RegisterFor(impl, impl.GetInterfaces()); 
+
+		return this; 
+	} 
+
+	public ITypeRegistrar RegisterFor(Type implementation, params Type[] interfaces) 
+	{ 
+		return RegisterFor(implementation, (IEnumerable<type>)interfaces); 
+	} 
+
+	public ITypeRegistrar RegisterFor(Type implementation, IEnumerable<type> interfaces) 
+	{ 
+		foreach (var @interface in interfaces) 
+			_services[GetRegistrableType(@interface)] = 
+				new ServiceDescriptor 
+				{ 
+					ServiceType = implementation 
+				}; 
+
+		return this; 
+	} 
+
+	private static Type GetRegistrableType(Type type) 
+	{ 
+		return type.IsGenericType &amp;&amp; type.ContainsGeneric ? type.GetGenericTypeDefinition() : type; 
+	}
+}</type></type></type></type></pre>
+			<div class="Caption">
+				Code Excerpt 8: Registrar Members</div>
+			<p>
+				As you can see, there are a couple of changes. <code>ITypeRegistrar </code>is just
+				a base for <code>IServicesRegistrar</code>, and all <code>void </code>members have
+				been replaced with <code>ITypeRegistrar </code>to allow method chaining. </p>
+		<h2>
+				Generics Registration</h2>
+		<p>
+				Registering generics has 2 cases which had been solved by method 
+				GetRegistrableType. Next section will show an example of each. Let&#39;s see the 
+				situations:</p>
+		<ol>
+			<li>Register an
+				<a href="http://msdn.microsoft.com/en-us/library/system.type.isgenerictype(v=VS.90).aspx">
+				open constructed type</a> (generic arguments not specified). Let&#39;s call this one 
+				an &quot;implicit registration&quot;</li>
+			<li>Register a
+				<a href="http://msdn.microsoft.com/en-us/library/system.type.isgenerictype(v=VS.90).aspx">
+				close constructed type</a> (generic arguments have been specified). Let&#39;s call 
+				this one an &quot;explicit registration&quot;</li>
+		</ol>
+		<p>
+			Let&#39;s take a look to both cases in the simplest way.</p>
+		<pre>
+	public interface ITypeNamePrinter&lt;TType&gt;
+	{
+		void Print();
+	}
+
+	public class TypeNamePrinter&lt;TType&gt; : ITypeNamePrinter&lt;TType&gt;
+	{
+		public void Print()
+		{
+			Console.WriteLine(typeof(TType).FullName);
+		}
+	}
+
+	[TestFixture]
+	[TestClass]
+	public class GenericRegistrations
+	{
+		[Test]
+		[TestMethod]
+		public void ExplicitRegistration()
+		{
+			var services = new ServicesContainer();
+
+			services.RegisterForAll(typeof(TypeNamePrinter&lt;int&gt;),
+				typeof(TypeNamePrinter&lt;string&gt;), typeof(TypeNamePrinter&lt;Type&gt;));
+
+			services.Resolve&lt;ITypeNamePrinter&lt;int&gt;&gt;().Print();
+			services.Resolve&lt;ITypeNamePrinter&lt;string&gt;&gt;().Print();
+			services.Resolve&lt;ITypeNamePrinter&lt;Type&gt;&gt;().Print();
+
+			Assert.Throws(typeof(Exception), () =&gt; 
+				services.Resolve&lt;ITypeNamePrinter&lt;float&gt;&gt;().Print());
+		}
+
+		[Test]
+		[TestMethod]
+		public void ImplicitRegistration()
+		{
+			var services = new ServicesContainer();
+
+			services.RegisterForAll(typeof(TypeNamePrinter&lt;&gt;));
+
+			services.Resolve&lt;ITypeNamePrinter&lt;int&gt;&gt;().Print();
+			services.Resolve&lt;ITypeNamePrinter&lt;string&gt;&gt;().Print();
+			services.Resolve&lt;ITypeNamePrinter&lt;Type&gt;&gt;().Print();
+
+			Assert.DoesNotThrow(() =&gt; 
+				services.Resolve&lt;ITypeNamePrinter&lt;float&gt;&gt;().Print());
+		}
+	}</pre>
+		<div class="Caption">
+			Code Excerpt 9: Generics Registrations</div>
+		<p>
+			Explicit implementation sample registers every type. When asking 
+			for one not explicitly registered an exception is thrown. Implicit 
+			registration simply registers the open contructed type and every time you ask 
+			the container for a new close contructed type&#39;s instance it creates the 
+			registration and the instance for that type. Using combinations of implicit and 
+			explicit could result in a very flexible an interesting scenario. To end with 
+			this subject let&#39;s look at one, a little more complicated, example with explicit 
+			registrations.</p>
+		<pre>	public interface IExplicit&lt;TType&gt;
+	{
+		void Print();
+	}
+
+	public class StringExplicit : IExplicit&lt;string&gt;
+	{
+		public void Print()
+		{
+			Console.WriteLine("System.String");
+		}
+	}
+
+	public class IntExplicit : IExplicit&lt;int&gt;
+	{
+		public void Print()
+		{
+			Console.WriteLine("System.Int32");
+		}
+	}
+
+	public class TypeExplicit : IExplicit&lt;Type&gt;
+	{
+		public void Print()
+		{
+			Console.WriteLine("System.Type");
+		}
+	}
+
+	[TestFixture]
+	[TestClass]
+	public class ExplicitRegistrations
+	{
+		[Test]
+		[TestMethod]
+		public void Test()
+		{
+			var services = new ServicesContainer();
+			services.RegisterForAll(typeof(StringExplicit), 
+				typeof(IntExplicit), typeof(TypeExplicit));
+
+			services.Resolve&lt;IExplicit&lt;int&gt;&gt;().Print();
+			services.Resolve&lt;IExplicit&lt;string&gt;&gt;().Print();
+			services.Resolve&lt;IExplicit&lt;Type&gt;&gt;().Print();
+		}
+	}</pre>
+		<div class="Caption">
+			Code Excerpt 10: Explicit registrations</div>
+		<h2>
+			IoC Kingdom</h2>
+		<p>
+			Our new
+				IoC Container is ready. Let's play with it:</p>
+			<pre lang="cs">    public interface IKing : IService
+    {
+        IBoss&lt;IGuard&gt; Captain { get; }
+        IBoss&lt;IMaid&gt; Mistress { get; }
+
+        void RuleTheCastle();
+    }
+
+    public interface IServant : IService
+    {
+        void Serve();
+    }
+
+    public interface IGuard : IServant
+    {
+
+    }
+
+    public interface IMaid : IServant
+    {
+
+    }
+
+    public interface IBoss&lt;TServant&gt;
+        where TServant : IServant
+    {
+        TServant Servant { get; }
+        void OrderServantToServe();
+    }
+
+    public class King : Service, IKing
+    {
+        public King(IBoss&lt;IGuard&gt; captain, IBoss&lt;IMaid&gt; mistress)
+        {
+            Captain = captain;
+            Mistress = mistress;
+        }
+
+        public void RuleTheCastle()
+        {
+            Console.WriteLine("I Rule!!!");
+
+            Captain.OrderServantToServe();
+            Mistress.OrderServantToServe();
+        }
+
+        public IBoss&lt;IGuard&gt; Captain
+        {
+            get;
+            private set;
+        }
+
+        public IBoss&lt;IMaid&gt; Mistress
+        {
+            get;
+            private set;
+        }
+    }
+
+    public class Boss&lt;TServant&gt; : Service, IBoss&lt;TServant&gt;
+        where TServant : IServant
+    {
+        public Boss(TServant servant)
+        {
+            Servant = servant;
+        }
+
+        public TServant Servant
+        {
+            get;
+            private set;
+        }
+
+        public void OrderServantToServe()
+        {
+            Servant.Serve();
+        }
+    }
+
+    public class Guard : Service, IGuard
+    {
+        public void Serve()
+        {
+            Console.WriteLine("Watch!!");
+        }
+    }
+
+    public class Maid : Service, IMaid
+    {
+        public void Serve()
+        {
+            Console.WriteLine("Clean!!");
+        }
+    }</pre>
+			<div class="Caption">
+				Code Excerpt 11: The King and the Castle</div>
+			<p>
+				A test project has been included along with the solution, it contains this 
+				sample, which is dummy but has everything we need for a test. A couple of types 
+				useful for registration are also included, but they are too lame to be explained 
+				here.</p>
+		<p>
+				Before saying good bye, let&#39;s see how to use the container.</p>
+			<pre lang="cs">var services = new ServicesContainer(); 
+services.RegisterForAll(ServicesImplementation .FromAssemblyContaining&lt;IKing&gt;());
+
+var king = services.Resolve&lt;IKing&gt;();
+king.RuleTheCastle();</pre>
+			<div class="Caption">
+				Code Excerpt 12: Using the Container</div>
+			<p>
+				I hope it will be useful!!! Enjoy!!</p>
+		</span>
+		<!-- End Article -->
+	</div>
+</body>
+</html>

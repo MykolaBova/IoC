@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Myotragus.IoC", "Myotragus.IoC\Myotragus.IoC.csproj", "{5EAC1A3A-699D-4379-A53A-F638E3DD2807}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Myotragus.IoC.Tests", "Myotragus.IoC.Tests\Myotragus.IoC.Tests.csproj", "{D791E692-D6EC-4259-858F-C1552930FCCD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{332F2D07-A0E3-4553-9D30-9B3D454BC39E}"
+	ProjectSection(SolutionItems) = preProject
+		Text\AnIoCContainerIn15Min.htm = Text\AnIoCContainerIn15Min.htm
+		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
+		Myotragus.IoC.vsmdi = Myotragus.IoC.vsmdi
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = Myotragus.IoC.vsmdi
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5EAC1A3A-699D-4379-A53A-F638E3DD2807}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5EAC1A3A-699D-4379-A53A-F638E3DD2807}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5EAC1A3A-699D-4379-A53A-F638E3DD2807}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5EAC1A3A-699D-4379-A53A-F638E3DD2807}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D791E692-D6EC-4259-858F-C1552930FCCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D791E692-D6EC-4259-858F-C1552930FCCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D791E692-D6EC-4259-858F-C1552930FCCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D791E692-D6EC-4259-858F-C1552930FCCD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

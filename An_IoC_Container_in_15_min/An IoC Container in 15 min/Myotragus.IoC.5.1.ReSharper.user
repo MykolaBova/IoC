@@ -1,0 +1,47 @@
+<Configuration>
+  <SettingsComponent>
+    <string />
+    <integer />
+    <boolean>
+      <setting name="SolutionAnalysisEnabled">False</setting>
+    </boolean>
+  </SettingsComponent>
+  <RecentFiles>
+    <RecentFiles>
+      <File id="5EAC1A3A-699D-4379-A53A-F638E3DD2807/f:Interfaces.cs" caret="78" fromTop="8" />
+      <File id="5EAC1A3A-699D-4379-A53A-F638E3DD2807/f:Implementations.cs" caret="3171" fromTop="107" />
+      <File id="D791E692-D6EC-4259-858F-C1552930FCCD/d:PlayingWithGenerics/f:GenericsRegistrations.cs" caret="480" fromTop="11" />
+      <File id="D791E692-D6EC-4259-858F-C1552930FCCD/d:PlayingWithGenerics/f:ExplicitRegistrations.cs" caret="148" fromTop="3" />
+      <File id="5EAC1A3A-699D-4379-A53A-F638E3DD2807/f:Registration.cs" caret="2950" fromTop="18" />
+      <File id="D791E692-D6EC-4259-858F-C1552930FCCD/f:Services.cs" caret="49" fromTop="3" />
+      <File id="D791E692-D6EC-4259-858F-C1552930FCCD/f:RuleTheCastle.cs" caret="809" fromTop="7" />
+      <File id="332F2D07-A0E3-4553-9D30-9B3D454BC39E/f:AnIoCContainerIn15Min.htm/l:C!?Documents and Settings?erich?My Documents?Visual Studio 2008?Projects?An IoC Container in 15 min?Text?AnIoCContainerIn15Min.htm" caret="16036" fromTop="19" />
+    </RecentFiles>
+    <RecentEdits>
+      <File id="D791E692-D6EC-4259-858F-C1552930FCCD/d:PlayingWithGenerics/f:GenericsRegistrations.cs" caret="1449" fromTop="44" />
+      <File id="D791E692-D6EC-4259-858F-C1552930FCCD/d:PlayingWithGenerics/f:GenericsRegistrations.cs" caret="480" fromTop="11" />
+      <File id="D791E692-D6EC-4259-858F-C1552930FCCD/d:PlayingWithGenerics/f:ExplicitRegistrations.cs" caret="148" fromTop="3" />
+      <File id="5EAC1A3A-699D-4379-A53A-F638E3DD2807/f:Registration.cs" caret="865" fromTop="2" />
+      <File id="5EAC1A3A-699D-4379-A53A-F638E3DD2807/f:Registration.cs" caret="1477" fromTop="10" />
+      <File id="5EAC1A3A-699D-4379-A53A-F638E3DD2807/f:Registration.cs" caret="2475" fromTop="10" />
+      <File id="5EAC1A3A-699D-4379-A53A-F638E3DD2807/f:Registration.cs" caret="2850" fromTop="14" />
+      <File id="5EAC1A3A-699D-4379-A53A-F638E3DD2807/f:Registration.cs" caret="2950" fromTop="18" />
+      <File id="D791E692-D6EC-4259-858F-C1552930FCCD/f:Services.cs" caret="49" fromTop="3" />
+      <File id="D791E692-D6EC-4259-858F-C1552930FCCD/f:RuleTheCastle.cs" caret="737" fromTop="10" />
+      <File id="D791E692-D6EC-4259-858F-C1552930FCCD/f:RuleTheCastle.cs" caret="809" fromTop="7" />
+      <File id="332F2D07-A0E3-4553-9D30-9B3D454BC39E/f:AnIoCContainerIn15Min.htm/l:C!?Documents and Settings?erich?My Documents?Visual Studio 2008?Projects?An IoC Container in 15 min?Text?AnIoCContainerIn15Min.htm" caret="0" fromTop="19" />
+      <File id="332F2D07-A0E3-4553-9D30-9B3D454BC39E/f:AnIoCContainerIn15Min.htm/l:C!?Documents and Settings?erich?My Documents?Visual Studio 2008?Projects?An IoC Container in 15 min?Text?AnIoCContainerIn15Min.htm" caret="0" fromTop="19" />
+      <File id="332F2D07-A0E3-4553-9D30-9B3D454BC39E/f:AnIoCContainerIn15Min.htm/l:C!?Documents and Settings?erich?My Documents?Visual Studio 2008?Projects?An IoC Container in 15 min?Text?AnIoCContainerIn15Min.htm" caret="16036" fromTop="19" />
+    </RecentEdits>
+  </RecentFiles>
+  <NAntValidationSettings>
+    <NAntPath value="" />
+  </NAntValidationSettings>
+  <UnitTestRunner>
+    <Providers />
+  </UnitTestRunner>
+  <UnitTestRunnerNUnit>
+    <NUnitInstallDir>C:\Program Files\NUnit 2.5.9\bin\net-2.0\</NUnitInstallDir>
+    <UseAddins>Never</UseAddins>
+  </UnitTestRunnerNUnit>
+</Configuration>
